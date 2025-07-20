@@ -13,6 +13,14 @@ spring:
     username: root
     password: ${mysql.password}
 
+  #服务注册发现
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        username: nacos
+        password: nacos
+
 
 
 #配置plus打印sql日志
