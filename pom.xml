@@ -13,6 +13,7 @@
 
     <modules>
         <module>short-link-common</module>
+        <module>short-link-account</module>
     </modules>
 
     <properties>
@@ -24,7 +25,7 @@
         <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
         <spring-cloud.version>2021.0.8</spring-cloud.version>
 
-        <mybatisplus.boot.starter.version>3.4.0</mybatisplus.boot.starter.version>
+        <mybatisplus.boot.starter.version>3.5.12</mybatisplus.boot.starter.version>
         <lombok.version>1.18.16</lombok.version>
         <xxl-job.version>2.3.0</xxl-job.version>
         <sharding-jdbc.version>4.1.1</sharding-jdbc.version>
@@ -32,6 +33,7 @@
         <redission.version>3.10.1</redission.version>
         <minio.version>8.5.2</minio.version>
         <jwt.version>0.11.2</jwt.version>
+        <mysql.version>8.0.33</mysql.version>
     </properties>
 
     <dependencyManagement>
@@ -62,6 +64,13 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatisplus.boot.starter.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${mysql.version}</version>
             </dependency>
 
             <dependency>
