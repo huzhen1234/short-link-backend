@@ -20,8 +20,14 @@ spring:
         server-addr: localhost:8848
         username: nacos
         password: nacos
-
-
+# 整合邮件
+  mail:
+    host: smtp.qq.com #发送邮件的服务器
+    username: ${qq.email}
+    password: ${qq.shouquanma}
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
+    default-encoding: utf-8
 
 #配置plus打印sql日志
 mybatis-plus:
