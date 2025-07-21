@@ -1,10 +1,12 @@
 package com.hutu.shortlinkaccount.utils;
 
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -61,11 +63,14 @@ public class MailUtil {
                     "return 1";
 
     /**
+     * 异步方法
+     * 默认是8个线程 原始配置类 TaskExecutionProperties -- 效率之所以高是因为把任务当到了阻塞队列中
      * 发送验证码邮件（带限流）
      * @param to 目标邮箱
      * @param ip 客户端IP地址
      * @throws MessagingException
      */
+    @Async
     public void sendVerificationCodeMail(String to, String ip) throws MessagingException {
         // 1. 生成限流Key
         String rateLimitKey = RATE_LIMIT_KEY_PREFIX + ip + ":" + to;
@@ -89,7 +94,8 @@ public class MailUtil {
                         "</body></html>",
                 verificationCode
         );
-        sendHtmlMail(to, subject, htmlContent);
+        MailUtil proxy = (MailUtil) AopContext.currentProxy();
+        proxy.sendHtmlMail(to, subject, htmlContent);
     }
 
     /**
