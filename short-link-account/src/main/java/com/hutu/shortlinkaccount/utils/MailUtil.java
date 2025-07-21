@@ -70,7 +70,7 @@ public class MailUtil {
      * @param ip 客户端IP地址
      * @throws MessagingException
      */
-    @Async
+    @Async("threadExecutor")
     public void sendVerificationCodeMail(String to, String ip) throws MessagingException {
         // 1. 生成限流Key
         String rateLimitKey = RATE_LIMIT_KEY_PREFIX + ip + ":" + to;
