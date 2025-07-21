@@ -11,7 +11,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:13306/short_link_account?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
     username: root
-    password: ${mysql.password}
+    password: ${password}
 
   #服务注册发现
   cloud:
@@ -35,7 +35,7 @@ spring:
     port: 6379
     timeout: 5000
     connect-timeout: 5000
-    password: ${mysql.password}
+    password: ${password}
     # redis连接池配置
     lettuce:
       pool:

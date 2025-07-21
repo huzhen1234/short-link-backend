@@ -2,7 +2,7 @@ package com.hutu.shortlinkaccount.utils;
 
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -34,7 +34,7 @@ public class MailUtil {
     @Value("${spring.mail.username}")
     private String from;
     @Resource
-    private StringRedisTemplate redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     // 限流Lua脚本（原子操作）
     private static final String RATE_LIMIT_LUA_SCRIPT =
