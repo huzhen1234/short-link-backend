@@ -25,8 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -95,7 +97,16 @@ public class MinioUtil {
      * @return 文件路径
      */
     public String uploadFile(MultipartFile file, String bucketName) {
-        return uploadFile(file, bucketName, file.getOriginalFilename());
+        // 获取原始文件名以提取扩展名
+        String originalFilename = file.getOriginalFilename();
+        String fileExtension = "";
+        if (originalFilename != null && originalFilename.contains(".")) {
+            fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        }
+        // 生成文件名：年月日-UUID
+        String newFileName = LocalDate.now().toString().replace("-", "") + "-" + UUID.randomUUID() + fileExtension;
+        // 调用上传方法并返回预览地址
+        return uploadFile(file, bucketName, newFileName);
     }
 
     /**
@@ -117,7 +128,7 @@ public class MinioUtil {
                                 .contentType(file.getContentType())
                                 .build()
                 );
-                return fileName;
+                return getPreviewUrl(bucketName, fileName);
             }
         } catch (Exception e) {
             throw new RuntimeException("文件上传失败", e);
