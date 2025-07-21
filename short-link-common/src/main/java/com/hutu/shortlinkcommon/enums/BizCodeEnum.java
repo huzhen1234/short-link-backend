@@ -88,6 +88,8 @@ public enum BizCodeEnum {
     OPS_REPEAT(110001,"重复操作"),
     OPS_NETWORK_ADDRESS_ERROR(110002,"网络地址错误"),
 
+    MAIL_SEND_ERROR(610002, "发送邮件异常"),
+
 
     /**
      * 文件相关

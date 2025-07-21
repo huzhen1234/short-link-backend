@@ -2,4 +2,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
 com.hutu.shortlinkcommon.config.MinioConfig,\
 com.hutu.shortlinkcommon.config.RedisConfig,\
 com.hutu.shortlinkcommon.config.ThreadPoolConfig,\
+com.hutu.shortlinkcommon.exception.CustomExceptionHandler,\
   com.hutu.shortlinkcommon.config.MinioUtil

@@ -67,14 +67,13 @@ public class MailUtil {
      * 默认是8个线程 原始配置类 TaskExecutionProperties -- 效率之所以高是因为把任务当到了阻塞队列中
      * 发送验证码邮件（带限流）
      * @param to 目标邮箱
-     * @param ip 客户端IP地址
      * @throws MessagingException
      */
     @Async("threadExecutor")
-    public void sendVerificationCodeMail(String to, String ip) throws MessagingException {
+    public void sendVerificationCodeMail(String to) throws MessagingException {
         // 1. 生成限流Key
-        String rateLimitKey = RATE_LIMIT_KEY_PREFIX + ip + ":" + to;
-        String dailyLimitKey = DAILY_LIMIT_KEY_PREFIX + ip + ":" + to;
+        String rateLimitKey = RATE_LIMIT_KEY_PREFIX + ":" + to;
+        String dailyLimitKey = DAILY_LIMIT_KEY_PREFIX + ":" + to;
 
         // 2. 执行限流检查
         if (!passRateLimitCheck(rateLimitKey, dailyLimitKey)) {

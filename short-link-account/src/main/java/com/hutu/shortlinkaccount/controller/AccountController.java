@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * 用户控制器
+ */
 @RestController
 @RequestMapping("/api/v1/account")
 @RequiredArgsConstructor
