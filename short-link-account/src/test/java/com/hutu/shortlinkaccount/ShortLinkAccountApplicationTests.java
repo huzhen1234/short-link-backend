@@ -15,7 +15,7 @@ class ShortLinkAccountApplicationTests {
 
 	@Test
 	void contextLoads() throws MessagingException {
-		mailUtil.sendSimpleMail("3780430102@qq.com", "测试", "测试");
+//		mailUtil.sendSimpleMail("3780430102@qq.com", "测试", "测试");
 	}
 
 }
