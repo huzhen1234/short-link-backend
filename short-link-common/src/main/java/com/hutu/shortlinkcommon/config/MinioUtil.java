@@ -1,4 +1,4 @@
-package com.hutu.shortlinkaccount.utils;
+package com.hutu.shortlinkcommon.config;
 
 import io.minio.BucketExistsArgs;
 import io.minio.CopyObjectArgs;

@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.hutu.shortlinkcommon.config.MinioConfig,\
+com.hutu.shortlinkcommon.config.RedisConfig

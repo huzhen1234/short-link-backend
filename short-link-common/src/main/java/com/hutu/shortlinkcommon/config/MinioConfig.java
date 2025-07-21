@@ -1,4 +1,4 @@
-package com.hutu.shortlinkaccount.config;
+package com.hutu.shortlinkcommon.config;
 import io.minio.MinioClient;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
