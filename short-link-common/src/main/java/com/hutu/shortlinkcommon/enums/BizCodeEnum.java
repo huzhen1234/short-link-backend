@@ -108,6 +108,10 @@ public enum BizCodeEnum {
     MAIL_CAPTCHA_ERROR(210002,"邮箱验证码错误"),
     // 保存用户信息失败
     SAVE_USER_INFO_FAIL(210004,"保存用户信息失败"),
+    // 手机号重复
+    PHONE_REPEAT(210005,"手机号重复"),
+    // 邮箱重复
+    MAIL_REPEAT(210006,"邮箱重复"),
 
 
     /**

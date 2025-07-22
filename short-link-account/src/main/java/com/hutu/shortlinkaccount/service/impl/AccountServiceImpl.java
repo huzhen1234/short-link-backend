@@ -38,8 +38,18 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account>
         verifyCaptcha(accountRegisterReq.getCaptcha());
         // 校验邮箱验证码
         verifyEmailCaptcha(accountRegisterReq.getMail(), accountRegisterReq.getMailCode());
+        // 检查唯一性 手机号对应一个对应的邮件
+        verifyUniqueness(accountRegisterReq.getPhone(),accountRegisterReq.getMail());
         boolean save = save(fillAccountInfo(accountRegisterReq));
         AssertUtils.isTrue(save, BizCodeEnum.SAVE_USER_INFO_FAIL);
+        // TODO 发放福利，发放流量包
+    }
+
+    private void verifyUniqueness(String phone, String mail) {
+        Account account = lambdaQuery().eq(Account::getPhone, phone).one();
+        AssertUtils.isNull(account, BizCodeEnum.PHONE_REPEAT);
+        account = lambdaQuery().eq(Account::getMail, mail).one();
+        AssertUtils.isNull(account, BizCodeEnum.MAIL_REPEAT);
     }
 
     private Account fillAccountInfo(AccountRegisterReq accountRegisterReq) {

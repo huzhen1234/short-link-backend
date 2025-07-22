@@ -1,6 +1,5 @@
 package com.hutu.shortlinkaccount.utils;
 
-import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -14,7 +13,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +41,12 @@ public class MailUtil {
                     "local dailyKey = KEYS[2]\n" +
                     "local rateExpire = tonumber(ARGV[1])\n" +
                     "local dailyExpire = tonumber(ARGV[2])\n" +
+                    "local dailyLimit = tonumber(ARGV[3])\n" +
+                    "\n" +
+                    "-- 兜底参数\n" +
+                    "if not rateExpire then rateExpire = 60 end\n" +
+                    "if not dailyExpire then dailyExpire = 86400 end\n" +
+                    "if not dailyLimit then dailyLimit = 10 end\n" +
                     "\n" +
                     "-- 检查频率限制\n" +
                     "if redis.call('exists', rateKey) == 1 then\n" +
@@ -49,8 +54,11 @@ public class MailUtil {
                     "end\n" +
                     "\n" +
                     "-- 检查每日限制\n" +
-                    "local dailyCount = tonumber(redis.call('get', dailyKey) or 0)\n" +
-                    "if dailyCount >= tonumber(ARGV[3]) then\n" +
+                    "local dailyValue = redis.call('get', dailyKey)\n" +
+                    "local dailyCount = tonumber(dailyValue)\n" +
+                    "if not dailyCount then dailyCount = 0 end\n" +
+                    "\n" +
+                    "if dailyCount >= dailyLimit then\n" +
                     "    return 0\n" +
                     "end\n" +
                     "\n" +
@@ -93,8 +101,13 @@ public class MailUtil {
                         "</body></html>",
                 verificationCode
         );
-        MailUtil proxy = (MailUtil) AopContext.currentProxy();
-        proxy.sendHtmlMail(to, subject, htmlContent);
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setFrom(from);
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(htmlContent, true);
+        mailSender.send(message);
     }
 
     /**
@@ -113,8 +126,7 @@ public class MailUtil {
         // 执行脚本
         Long result = redisTemplate.execute(
                 redisScript,
-                Collections.singletonList(rateLimitKey),
-                Collections.singletonList(dailyLimitKey),
+                Arrays.asList(rateLimitKey, dailyLimitKey),
                 String.valueOf(RATE_LIMIT_EXPIRE_MINUTES * 60),
                 String.valueOf(remainSecondsToday),
                 String.valueOf(DAILY_LIMIT_COUNT)
@@ -157,7 +169,7 @@ public class MailUtil {
     /**
      * 发送HTML邮件
      */
-    public void sendHtmlMail(String to, String subject, String html) throws MessagingException {
+/*    public void sendHtmlMail(String to, String subject, String html) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         helper.setFrom(from);
@@ -165,7 +177,7 @@ public class MailUtil {
         helper.setSubject(subject);
         helper.setText(html, true);
         mailSender.send(message);
-    }
+    }*/
 
     /**
      * 验证验证码（业务层调用）
