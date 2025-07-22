@@ -1,7 +1,7 @@
 package com.hutu.shortlinkaccount.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hutu.shortlinkaccount.domain.Traffic;
+import com.hutu.shortlinkaccount.domain.pojo.Traffic;
 import com.hutu.shortlinkaccount.service.TrafficService;
 import com.hutu.shortlinkaccount.mapper.TrafficMapper;
 import org.springframework.stereotype.Service;

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hutu.shortlinkaccount.mapper.TrafficMapper">
 
-    <resultMap id="BaseResultMap" type="com.hutu.shortlinkaccount.domain.Traffic">
+    <resultMap id="BaseResultMap" type="com.hutu.shortlinkaccount.domain.pojo.Traffic">
             <id property="id" column="id" />
             <result property="dayLimit" column="day_limit" />
             <result property="dayUsed" column="day_used" />

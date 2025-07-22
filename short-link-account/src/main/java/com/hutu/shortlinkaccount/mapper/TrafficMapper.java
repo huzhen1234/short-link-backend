@@ -1,6 +1,6 @@
 package com.hutu.shortlinkaccount.mapper;
 
-import com.hutu.shortlinkaccount.domain.Traffic;
+import com.hutu.shortlinkaccount.domain.pojo.Traffic;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

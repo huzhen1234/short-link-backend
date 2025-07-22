@@ -24,7 +24,7 @@ public class MailUtil {
     // 限流相关常量
     private static final String RATE_LIMIT_KEY_PREFIX = "MAIL_RATE_LIMIT:";
     private static final String DAILY_LIMIT_KEY_PREFIX = "MAIL_DAILY_LIMIT:";
-    private static final String VERIFICATION_CODE_KEY_PREFIX = "VERIFICATION_CODE:";
+    public static final String VERIFICATION_CODE_KEY_PREFIX = "VERIFICATION_CODE:";
     private static final int RATE_LIMIT_EXPIRE_MINUTES = 1;
     private static final int VERIFICATION_CODE_EXPIRE_MINUTES = 5;
     private static final int DAILY_LIMIT_COUNT = 10;

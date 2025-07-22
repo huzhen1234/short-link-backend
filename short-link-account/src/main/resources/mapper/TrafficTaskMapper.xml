@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hutu.shortlinkaccount.mapper.TrafficTaskMapper">
 
-    <resultMap id="BaseResultMap" type="com.hutu.shortlinkaccount.domain.TrafficTask">
+    <resultMap id="BaseResultMap" type="com.hutu.shortlinkaccount.domain.pojo.TrafficTask">
             <id property="id" column="id" />
             <result property="accountNo" column="account_no" />
             <result property="trafficId" column="traffic_id" />

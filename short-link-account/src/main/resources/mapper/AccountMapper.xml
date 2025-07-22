@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hutu.shortlinkaccount.mapper.AccountMapper">
 
-    <resultMap id="BaseResultMap" type="com.hutu.shortlinkaccount.domain.Account">
+    <resultMap id="BaseResultMap" type="com.hutu.shortlinkaccount.domain.pojo.Account">
             <id property="id" column="id" />
             <result property="accountNo" column="account_no" />
             <result property="headImg" column="head_img" />

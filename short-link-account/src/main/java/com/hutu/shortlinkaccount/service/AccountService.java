@@ -1,7 +1,10 @@
 package com.hutu.shortlinkaccount.service;
 
-import com.hutu.shortlinkaccount.domain.Account;
+import com.hutu.shortlinkaccount.domain.pojo.Account;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hutu.shortlinkaccount.domain.req.AccountRegisterReq;
+
+import javax.validation.Valid;
 
 /**
 * @author huzhen
@@ -10,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface AccountService extends IService<Account> {
 
+    void register(@Valid AccountRegisterReq accountRegisterReq);
 }

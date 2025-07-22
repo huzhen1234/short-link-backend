@@ -5,6 +5,8 @@ import lombok.Getter;
 /**
  * @Description 状态码定义约束，共6位数，前三位代表服务，后3位代表接口
  *  比如 商品服务210,购物车是220、用户服务230，403代表权限
+ *  通用状态码: 100-开头
+ *  用户模块：200-开头
  *
  **/
 public enum BizCodeEnum {
@@ -85,10 +87,27 @@ public enum BizCodeEnum {
      * 通用操作码
      */
 
-    OPS_REPEAT(110001,"重复操作"),
-    OPS_NETWORK_ADDRESS_ERROR(110002,"网络地址错误"),
+    OPS_REPEAT(100000,"重复操作"),
+    OPS_NETWORK_ADDRESS_ERROR(100001,"网络地址错误"),
 
-    MAIL_SEND_ERROR(610002, "发送邮件异常"),
+    MAIL_SEND_ERROR(100002, "发送邮件异常"),
+    // 参数异常
+    PARAM_ERROR(100003,"参数错误"),
+
+
+    /**
+     * 用户模块异常码
+     */
+    // 图形验证码已过期
+    CAPTCHA_CODE_EXPIRED(210000,"图形验证码已过期"),
+    // 图形验证码错误
+    CAPTCHA_ERROR(210001,"图形验证码错误"),
+    // 邮箱验证码已过期
+    MAIL_CAPTCHA_EXPIRED(210003,"邮箱验证码已过期"),
+    // 邮箱验证码错误
+    MAIL_CAPTCHA_ERROR(210002,"邮箱验证码错误"),
+    // 保存用户信息失败
+    SAVE_USER_INFO_FAIL(210004,"保存用户信息失败"),
 
 
     /**

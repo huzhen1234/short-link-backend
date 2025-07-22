@@ -23,6 +23,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import static com.hutu.shortlinkaccount.utils.OthersUtils.getCaptchaKey;
 
 
 @RestController
@@ -46,16 +47,14 @@ public class NotifyController {
 
     /**
      * 生成验证码
-     * @param request
-     * @param response
      */
     @GetMapping("captcha")
-    public BaseResponse<Void> getCaptcha(HttpServletRequest request, HttpServletResponse response){
+    public BaseResponse<Void> getCaptcha(HttpServletResponse response){
         // 获取验证码内容
         String captchaText = captchaProducer.createText();
         log.info("验证码内容:{}",captchaText);
         //存储redis,配置过期时间
-        redisTemplate.opsForValue().set(getCaptchaKey(request),captchaText,CAPTCHA_CODE_EXPIRED,TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(getCaptchaKey(1L),captchaText,CAPTCHA_CODE_EXPIRED,TimeUnit.MILLISECONDS);
         BufferedImage bufferedImage = captchaProducer.createImage(captchaText);
         try (ServletOutputStream outputStream = response.getOutputStream()){
             ImageIO.write(bufferedImage,"jpg",outputStream);
@@ -68,14 +67,7 @@ public class NotifyController {
 
 
 
-    private String getCaptchaKey(HttpServletRequest request){
-        String ip = CommonUtil.getIpAddr(request);
-        // TODO 换成用户 id
-        String userAgent = request.getHeader("User-Agent");
-        String key = "account-service:captcha:"+CommonUtil.MD5(ip+userAgent);
-        log.info("验证码key:{}",key);
-        return key;
-    }
+
 
 
 
