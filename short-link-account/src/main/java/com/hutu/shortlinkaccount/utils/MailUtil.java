@@ -1,5 +1,6 @@
 package com.hutu.shortlinkaccount.utils;
 
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -14,6 +15,7 @@ import javax.mail.internet.MimeMessage;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -101,13 +103,8 @@ public class MailUtil {
                         "</body></html>",
                 verificationCode
         );
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setFrom(from);
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(htmlContent, true);
-        mailSender.send(message);
+        MailUtil proxy = (MailUtil) AopContext.currentProxy();
+        proxy.sendHtmlMail(to, subject, htmlContent);
     }
 
     /**
@@ -169,7 +166,7 @@ public class MailUtil {
     /**
      * 发送HTML邮件
      */
-/*    public void sendHtmlMail(String to, String subject, String html) throws MessagingException {
+    public void sendHtmlMail(String to, String subject, String html) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         helper.setFrom(from);
@@ -177,7 +174,7 @@ public class MailUtil {
         helper.setSubject(subject);
         helper.setText(html, true);
         mailSender.send(message);
-    }*/
+    }
 
     /**
      * 验证验证码（业务层调用）

@@ -7,11 +7,11 @@ spring:
   application:
     name: short-link-account
   #数据库配置
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:13306/short_link_account?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: ${password}
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:13306/short_link_account?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+#    username: root
+#    password: ${password}
 
   #服务注册发现
   cloud:
@@ -43,11 +43,37 @@ spring:
         max-idle: 10 # 连接池中的最大空闲连接
         min-idle: 2 # 连接池中的最小空闲连接
         max-wait: 10000 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+  # 数据源 ds0 第一个数据库
+  shardingsphere:
+    datasource:
+      names: ds0
+      ds0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:13306/short_link_account?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: root
+        password: ${password}
+    rules:
+      sharding:
+        tables:
+          traffic:
+            actual-data-nodes: ds0.traffic_$->{0..1}
+            table-strategy:
+              standard:
+                sharding-column: account_no
+                sharding-algorithm-name: traffic-inline
+        sharding-algorithms:
+          traffic-inline:
+            type: INLINE
+            props:
+              algorithm-expression: traffic_$->{account_no % 2}
+    props:
+      sql-show: true
 
 #配置plus打印sql日志
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 # minio 配置
 minio:
   bucket-name: ${bucket_name}
