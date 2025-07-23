@@ -1,6 +1,7 @@
 package com.hutu.shortlinkaccount.controller;
 
 
+import com.hutu.shortlinkaccount.domain.req.AccountLoginReq;
 import com.hutu.shortlinkaccount.domain.req.AccountRegisterReq;
 import com.hutu.shortlinkaccount.service.AccountService;
 import com.hutu.shortlinkcommon.common.BaseResponse;
@@ -35,6 +36,11 @@ public class AccountController {
     public BaseResponse<String> register(@Valid @RequestBody AccountRegisterReq accountRegisterReq){
         accountService.register(accountRegisterReq);
         return ResultUtils.success("注册成功");
+    }
+
+    @PostMapping("login")
+    public BaseResponse<String> login(@RequestBody AccountLoginReq request){
+        return ResultUtils.success(accountService.login(request));
     }
 
 

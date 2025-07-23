@@ -2,14 +2,17 @@ package com.hutu.shortlinkaccount.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hutu.shortlinkaccount.domain.pojo.Account;
+import com.hutu.shortlinkaccount.domain.req.AccountLoginReq;
 import com.hutu.shortlinkaccount.domain.req.AccountRegisterReq;
 import com.hutu.shortlinkaccount.service.AccountService;
 import com.hutu.shortlinkaccount.mapper.AccountMapper;
 import com.hutu.shortlinkaccount.utils.OthersUtils;
+import com.hutu.shortlinkcommon.common.CurrentAccountInfo;
 import com.hutu.shortlinkcommon.enums.AuthTypeEnum;
 import com.hutu.shortlinkcommon.enums.BizCodeEnum;
 import com.hutu.shortlinkcommon.util.AssertUtils;
 import com.hutu.shortlinkcommon.util.CommonUtil;
+import com.hutu.shortlinkcommon.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.BeanUtils;
@@ -43,6 +46,17 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account>
         boolean save = save(fillAccountInfo(accountRegisterReq));
         AssertUtils.isTrue(save, BizCodeEnum.SAVE_USER_INFO_FAIL);
         // TODO 发放福利，发放流量包
+    }
+
+    @Override
+    public String login(AccountLoginReq request) {
+        String phone = request.getPhone();
+        Account account = lambdaQuery().eq(Account::getPhone, phone).one();
+        AssertUtils.notNull(account, BizCodeEnum.USER_NOT_EXIST);
+        AssertUtils.isTrue(Md5Crypt.md5Crypt(request.getPwd().getBytes(),account.getSecret()).equals(account.getPwd()), BizCodeEnum.USER_PWD_ERROR);
+        CurrentAccountInfo currentAccountInfo = CurrentAccountInfo.builder().build();
+        BeanUtils.copyProperties(account,currentAccountInfo);
+        return JWTUtil.geneJsonWebToken(currentAccountInfo);
     }
 
     private void verifyUniqueness(String phone, String mail) {

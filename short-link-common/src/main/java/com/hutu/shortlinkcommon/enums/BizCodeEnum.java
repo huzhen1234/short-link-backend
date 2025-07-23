@@ -112,7 +112,12 @@ public enum BizCodeEnum {
     PHONE_REPEAT(210005,"手机号重复"),
     // 邮箱重复
     MAIL_REPEAT(210006,"邮箱重复"),
-
+    // 用户不存在
+    USER_NOT_EXIST(210007, "用户不存在"),
+    // 用户密码错误
+    USER_PWD_ERROR(210008, "用户密码错误"),
+    // JWT解析失败 显示请重新登陆
+    JWT_PARSE_ERROR(210009, "请重新登陆"),
 
     /**
      * 文件相关

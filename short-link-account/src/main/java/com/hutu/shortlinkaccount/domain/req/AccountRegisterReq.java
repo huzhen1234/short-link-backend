@@ -20,7 +20,7 @@ public class AccountRegisterReq implements Serializable {
     private String accountName;
 
     @NotBlank(message = "手机号不能为空")
-    @Size(min = 11,max = 11,message = "手机号长度11位")
+    @Pattern(regexp = "^1[3-9]\\d{9}$", message = "手机号格式不正确")
     private String phone;
 
     @NotBlank(message = "密码不能为空")
