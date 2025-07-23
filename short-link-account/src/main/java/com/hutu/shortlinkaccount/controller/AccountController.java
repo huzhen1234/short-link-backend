@@ -23,7 +23,7 @@ import javax.validation.Valid;
  * 用户控制器
  */
 @RestController
-@RequestMapping("/api/v1/account")
+@RequestMapping("/api/v1/account/")
 @RequiredArgsConstructor
 public class AccountController {
 

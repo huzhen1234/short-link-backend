@@ -27,7 +27,7 @@ import static com.hutu.shortlinkaccount.utils.OthersUtils.getCaptchaKey;
 
 
 @RestController
-@RequestMapping("/api/v1/notify")
+@RequestMapping("/api/v1/notify/")
 @RequiredArgsConstructor
 @Slf4j
 public class NotifyController {
