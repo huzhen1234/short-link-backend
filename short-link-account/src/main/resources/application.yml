@@ -68,10 +68,6 @@ spring:
             type: INLINE
             props:
               algorithm-expression: traffic_$->{account_no % 2}
-        key-generator:
-          props:
-            worker:
-              id: ${worker.id}
     props:
       sql-show: true
 
