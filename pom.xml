@@ -28,7 +28,7 @@
         <mybatisplus.boot.starter.version>3.5.12</mybatisplus.boot.starter.version>
         <lombok.version>1.18.16</lombok.version>
         <xxl-job.version>2.3.0</xxl-job.version>
-        <shardingsphere.version>5.2.1</shardingsphere.version>
+        <shardingsphere.version>5.2.0</shardingsphere.version>
         <commons.lang3.version>3.9</commons.lang3.version>
         <redission.version>3.10.1</redission.version>
         <minio.version>8.5.2</minio.version>
@@ -122,12 +122,12 @@
                 <artifactId>kaptcha</artifactId>
                 <version>${captcha.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>shardingsphere-infra-util</artifactId>
-                <version>5.2.1</version>
-            </dependency>
+<!--    shardingsphere 5.2.1版本添加        -->
+<!--            <dependency>-->
+<!--                <groupId>org.yaml</groupId>-->
+<!--                <artifactId>snakeyaml</artifactId>-->
+<!--                <version>1.33</version>-->
+<!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
 

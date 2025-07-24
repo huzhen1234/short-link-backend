@@ -1,6 +1,5 @@
 package com.hutu.shortlinkcommon.config;
 
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +26,7 @@ public class ThreadPoolConfig {
         executor.setThreadFactory(new ThreadFactory() {
             private final AtomicInteger counter = new AtomicInteger(0);
             @Override
-            public Thread newThread(@NotNull Runnable r) {
+            public Thread newThread(Runnable r) {
                 Thread thread = new Thread(r);
                 thread.setName("shot-link-executor-" + counter.incrementAndGet());
                 thread.setUncaughtExceptionHandler((t, e) -> {

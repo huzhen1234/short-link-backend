@@ -2,7 +2,6 @@ package com.hutu.shortlinkcommon.common;
 
 import com.hutu.shortlinkcommon.enums.BizCodeEnum;
 import lombok.Data;
-import okhttp3.internal.http2.ErrorCode;
 
 import java.io.Serializable;
 
