@@ -43,6 +43,7 @@ spring:
         max-idle: 10 # 连接池中的最大空闲连接
         min-idle: 2 # 连接池中的最小空闲连接
         max-wait: 10000 # 连接池最大阻塞等待时间（使用负值表示没有限制）
+
   # 数据源 ds0 第一个数据库
   shardingsphere:
     datasource:
@@ -67,6 +68,10 @@ spring:
             type: INLINE
             props:
               algorithm-expression: traffic_$->{account_no % 2}
+        key-generator:
+          props:
+            worker:
+              id: ${worker.id}
     props:
       sql-show: true
 
