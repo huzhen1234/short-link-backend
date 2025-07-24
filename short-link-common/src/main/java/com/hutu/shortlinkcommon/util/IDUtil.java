@@ -1,5 +1,6 @@
 package com.hutu.shortlinkcommon.util;
 import org.apache.shardingsphere.sharding.algorithm.keygen.SnowflakeKeyGenerateAlgorithm;
+import java.util.Properties;
 
 /**
  * 雪花算法工具类
@@ -10,6 +11,10 @@ public class IDUtil {
 
     static {
         keyGenerator = new SnowflakeKeyGenerateAlgorithm();
+        Properties props = new Properties();
+        props.setProperty("worker-id", "1");
+
+        keyGenerator.init(props);
     }
 
     /**
