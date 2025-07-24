@@ -12,6 +12,7 @@ import com.hutu.shortlinkcommon.enums.AuthTypeEnum;
 import com.hutu.shortlinkcommon.enums.BizCodeEnum;
 import com.hutu.shortlinkcommon.util.AssertUtils;
 import com.hutu.shortlinkcommon.util.CommonUtil;
+import com.hutu.shortlinkcommon.util.IDUtil;
 import com.hutu.shortlinkcommon.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.Md5Crypt;
@@ -72,7 +73,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account>
         //认证级别
         account.setAuth(AuthTypeEnum.DEFAULT.name());
         //生成唯一的账号  TODO
-        account.setAccountNo(CommonUtil.getCurrentTimestamp());
+        account.setAccountNo(Long.valueOf(IDUtil.generateSnowflakeId().toString()));
         //设置密码 秘钥 盐
         account.setSecret("$1$"+CommonUtil.getStringNumRandom(8));
         String cryptPwd = Md5Crypt.md5Crypt(account.getPwd().getBytes(),account.getSecret());
