@@ -7,6 +7,7 @@ import lombok.Getter;
  *  比如 商品服务210,购物车是220、用户服务230，403代表权限
  *  通用状态码: 100-开头
  *  用户模块：200-开头
+ *  短链模块：300-开头
  *
  **/
 public enum BizCodeEnum {
@@ -15,6 +16,8 @@ public enum BizCodeEnum {
     /**
      * 短链分组
      */
+    // 短链分组添加失败
+    GROUP_ADD_FAIL(300001,"分组添加失败"),
     GROUP_REPEAT(23001,"分组名重复"),
     GROUP_OPER_FAIL(23503,"分组名操作失败"),
     GROUP_NOT_EXIST(23404,"分组不存在"),

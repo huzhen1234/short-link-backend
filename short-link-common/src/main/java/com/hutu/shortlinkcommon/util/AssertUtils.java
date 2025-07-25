@@ -61,7 +61,7 @@ public final class AssertUtils {
     }
 
     /**
-     * 断言对象不为null
+     * 取保断言对象不为null
      * @param object 对象
      * @param errorCode 错误码枚举
      */

@@ -1,6 +1,6 @@
 package com.hutu.shortlinklink.mapper;
 
-import com.hutu.shortlinklink.domain.LinkGroup;
+import com.hutu.shortlinklink.domain.pojo.LinkGroup;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
