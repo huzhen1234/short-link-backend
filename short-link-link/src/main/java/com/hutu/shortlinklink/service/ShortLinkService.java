@@ -1,6 +1,6 @@
 package com.hutu.shortlinklink.service;
 
-import com.hutu.shortlinklink.domain.ShortLink;
+import com.hutu.shortlinklink.domain.pojo.ShortLink;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

@@ -1,7 +1,7 @@
 package com.hutu.shortlinklink.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.hutu.shortlinklink.domain.ShortLink;
+import com.hutu.shortlinklink.domain.pojo.ShortLink;
 import com.hutu.shortlinklink.service.ShortLinkService;
 import com.hutu.shortlinklink.mapper.ShortLinkMapper;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.hutu.shortlinklink.domain;
+package com.hutu.shortlinklink.domain.pojo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
