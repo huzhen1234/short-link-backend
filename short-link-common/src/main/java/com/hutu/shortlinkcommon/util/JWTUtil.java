@@ -48,7 +48,7 @@ public class JWTUtil {
      */
     public static String geneJsonWebToken(CurrentAccountInfo loginUser) {
         String token = Jwts.builder().setSubject(SUBJECT)
-                //配置payload
+                //配置payload TODO 添加ip 防止jwt令牌盗用
                 .claim("head_img", loginUser.getHeadImg())
                 .claim("account_no", loginUser.getAccountNo())
                 .claim("username", loginUser.getUsername())
