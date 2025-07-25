@@ -40,3 +40,11 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+# minio 配置
+minio:
+  bucket-name: ${bucket_name}
+  url: ${minio_url}
+  access-key: ${minio_access_key}
+  secret-key: ${minio_secret_key}

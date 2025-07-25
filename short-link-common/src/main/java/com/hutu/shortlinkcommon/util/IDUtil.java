@@ -11,6 +11,7 @@ public class IDUtil {
 
     static {
         keyGenerator = new SnowflakeKeyGenerateAlgorithm();
+        // TODO
         Properties props = new Properties();
         props.setProperty("worker-id", "1");
 
