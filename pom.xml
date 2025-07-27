@@ -117,6 +117,21 @@
                 <artifactId>jjwt-api</artifactId>
                 <version>${jwt.version}</version>
             </dependency>
+            <!-- JJWT Implementation -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- JJWT Jackson integration (for JSON processing) -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
             <!--验证码kaptcha依赖包-->
             <dependency>
                 <groupId>com.github.penggle</groupId>

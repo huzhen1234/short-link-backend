@@ -26,7 +26,7 @@ public class JWTUtil {
     /**
      * 加密密钥
      */
-    private static final String SECRET = "hutu_zui_shuai";
+    private static final String SECRET = "93b2636e4bcd48e68e4f1a9df2f43a56";
 
     /**
      * 令牌前缀

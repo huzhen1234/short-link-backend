@@ -5,12 +5,6 @@ server:
 spring:
   application:
     name: short-link-link
-  #数据库配置
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:13306/short_link_link?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
-    username: root
-    password: ${password}
 
   #服务注册发现
   cloud:
@@ -36,10 +30,51 @@ spring:
         min-idle: 2 # 连接池中的最小空闲连接
         max-wait: 10000 # 连接池最大阻塞等待时间（使用负值表示没有限制）
 
+  # 数据源
+  shardingsphere:
+    datasource:
+      names: ds0,ds1
+      ds0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:13306/short_link_link_0?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: root
+        password: ${password}
+        maximum-pool-size: 50
+        minimum-idle: 50
+        max-lifetime: 1800000
+        idle-timeout: 30000
+      ds1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:13306/short_link_link_1?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: root
+        password: ${password}
+        maximum-pool-size: 50
+        minimum-idle: 50
+        max-lifetime: 1800000
+        idle-timeout: 30000
+    rules:
+      sharding:
+        tables:
+          link_group:
+            database-strategy:
+              standard:
+                sharding-column: account_no
+                sharding-algorithm-name: group-inline
+        sharding-algorithms:
+          group-inline:
+            type: INLINE
+            props:
+              algorithm-expression: ds$->{account_no % 2}
+    props:
+      sql-show: true
+
+
 #配置plus打印sql日志
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
 # minio 配置
