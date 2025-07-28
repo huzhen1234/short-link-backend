@@ -22,7 +22,6 @@ import java.util.UUID;
 @Slf4j
 public class CommonUtil {
 
-    private static final String CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     /**
      * 获取ip
@@ -161,39 +160,5 @@ public class CommonUtil {
         } catch (IOException e) {
             log.warn("响应json数据给前端异常:{}", e.getMessage());
         }
-    }
-
-    /**
-     * murmurhash算法
-     *
-     * @param param
-     * @return
-     */
-    public static long murmurHash32(String param) {
-        return Hashing.murmur3_32().hashUnencodedChars(param).padToLong();
-    }
-
-
-    /**
-     * 创建短链
-     * @param originalUrl 原始长链
-     * @return db编码+6位短链编码
-     */
-    public static String createShortLinkCode(String originalUrl) {
-        return encodeToBase62(murmurHash32(originalUrl));
-    }
-
-
-    /**
-     10进制转62进制
-     */
-    private static String encodeToBase62(long num) {
-        StringBuilder sb = new StringBuilder();
-        do {
-            int i = (int) (num % 62);
-            sb.append(CHARS.charAt(i));
-            num /= 62;
-        } while (num > 0);
-        return sb.reverse().toString();
     }
 }
