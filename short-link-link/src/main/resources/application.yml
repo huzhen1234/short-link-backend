@@ -33,7 +33,8 @@ spring:
   # 数据源
   shardingsphere:
     datasource:
-      names: ds0,ds1
+      # 三个库， ds0,ds1都有两个短链组、短链表。dsa只有短链表
+      names: ds0,ds1,dsa
       ds0:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -54,19 +55,50 @@ spring:
         minimum-idle: 50
         max-lifetime: 1800000
         idle-timeout: 30000
+      dsa:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:13306/short_link_link_a?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: root
+        password: ${password}
+        maximum-pool-size: 50
+        minimum-idle: 50
+        max-lifetime: 1800000
+        idle-timeout: 30000
     rules:
       sharding:
         tables:
           link_group:
+            actual-data-nodes: ds$->{0..1}.link_group
             database-strategy:
               standard:
                 sharding-column: account_no
                 sharding-algorithm-name: group-inline
+          short_link:
+            actual-data-nodes: ds0.short_link,ds1.short_link,dsa.short_link
+            database-strategy:
+              standard:
+                sharding-column: code
+                sharding-algorithm-name: link-sharding-database-algorithm
+            table-strategy:
+              standard:
+                sharding-column: code
+                sharding-algorithm-name: link-sharding-table-algorithm
         sharding-algorithms:
           group-inline:
             type: INLINE
             props:
               algorithm-expression: ds$->{account_no % 2}
+          link-sharding-database-algorithm:
+            type: CLASS_BASED
+            props:
+              strategy: STANDARD
+              algorithmClassName: com.hutu.shortlinklink.strategy.LinkDataBaseShardingAlgorithm
+          link-sharding-table-algorithm:
+            type: CLASS_BASED
+            props:
+              strategy: STANDARD
+              algorithmClassName: com.hutu.shortlinklink.strategy.LinkTableShardingAlgorithm
     props:
       sql-show: true
 

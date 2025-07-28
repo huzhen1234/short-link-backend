@@ -98,6 +98,7 @@ public enum BizCodeEnum {
     MAIL_SEND_ERROR(100002, "发送邮件异常"),
     // 参数异常
     PARAM_ERROR(100003,"参数错误"),
+    DB_ROUTE_NOT_FOUND(100004, "数据库路由失败"),
 
 
     /**
