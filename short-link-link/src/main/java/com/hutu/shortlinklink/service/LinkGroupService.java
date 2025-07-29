@@ -38,4 +38,9 @@ public interface LinkGroupService extends IService<LinkGroup> {
      * 修改短链分组
      */
     Boolean updateLinkGroup(LinkGroupUpdateRequest request);
+
+    /**
+     * 通过账号和ID查询分组
+     */
+    LinkGroup findByAccountNoAndId(Long accountNo, Long id);
 }

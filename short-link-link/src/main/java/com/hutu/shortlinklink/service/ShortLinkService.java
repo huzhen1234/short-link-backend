@@ -2,6 +2,7 @@ package com.hutu.shortlinklink.service;
 
 import com.hutu.shortlinklink.domain.pojo.ShortLink;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hutu.shortlinklink.domain.req.ShortLinkAddRequest;
 
 /**
 * @author EDY
@@ -10,4 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface ShortLinkService extends IService<ShortLink> {
 
+    Boolean createShortLink(ShortLinkAddRequest request);
 }

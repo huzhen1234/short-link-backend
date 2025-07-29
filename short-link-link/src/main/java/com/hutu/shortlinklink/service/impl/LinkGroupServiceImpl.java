@@ -90,6 +90,13 @@ public class LinkGroupServiceImpl extends ServiceImpl<LinkGroupMapper, LinkGroup
         AssertUtils.isTrue(update, BizCodeEnum.GROUP_OPER_FAIL);
         return Boolean.TRUE;
     }
+
+    @Override
+    public LinkGroup findByAccountNoAndId(Long accountNo, Long id) {
+        return lambdaQuery().eq(LinkGroup::getId, id)
+                .eq(LinkGroup::getAccountNo, accountNo)
+                .one();
+    }
 }
 
 

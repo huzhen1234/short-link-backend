@@ -16,12 +16,11 @@ public enum BizCodeEnum {
     /**
      * 短链分组
      */
-    // 短链分组添加失败
     GROUP_ADD_FAIL(300001,"分组添加失败"),
-    // 短链分组删除失败
     GROUP_DEL_FAIL(300002,"分组删除失败"),
     GROUP_NOT_EXIST(300003,"分组不存在"),
     GROUP_OPER_FAIL(300004,"分组名操作失败"),
+    LINK_ADD_FAIL(300002,"短链添加失败"),
     GROUP_REPEAT(23001,"分组名重复"),
 
 
