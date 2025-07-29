@@ -26,7 +26,7 @@ public class ShortLinkAddRequest {
     /**
      * 域名
      */
-    private Long domain;
+    private String domain;
 
     /**
      * 过期时间

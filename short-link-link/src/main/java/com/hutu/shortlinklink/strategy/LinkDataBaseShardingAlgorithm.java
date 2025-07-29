@@ -18,9 +18,9 @@ public class LinkDataBaseShardingAlgorithm implements StandardShardingAlgorithm<
 
     /**
      * 精准分片
-     * @param collection 数据源集合
-     *                             在分库时值为所有分片库的集合 databaseNames
-     *                             分表时为对应分片库中所有分片表的集合 tablesNames
+     * @param collection 当前 SQL 所涉及的分片目标名称集合。
+     *                   - 如果是分库：collection 是所有数据库名（如 ds_0, ds_1）
+     *                   - 如果是分表：collection 是所有实际表名（如 link_mapping_0, link_mapping_1）
      * @param preciseShardingValue        分片属性，包括
      *                             logicTableName 为逻辑表，
      *                             columnName 分片健（字段），

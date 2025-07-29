@@ -5,6 +5,7 @@ import com.hutu.shortlinkcommon.common.CurrentAccountInfo;
 import com.hutu.shortlinkcommon.enums.BizCodeEnum;
 import com.hutu.shortlinkcommon.interceptor.LoginInterceptor;
 import com.hutu.shortlinkcommon.util.AssertUtils;
+import com.hutu.shortlinkcommon.util.CommonUtil;
 import com.hutu.shortlinklink.domain.pojo.LinkGroup;
 import com.hutu.shortlinklink.domain.pojo.ShortLink;
 import com.hutu.shortlinklink.domain.req.ShortLinkAddRequest;
@@ -36,6 +37,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         AssertUtils.notNull(linkGroup, BizCodeEnum.GROUP_NOT_EXIST);
         ShortLink shortLink = new ShortLink();
         BeanUtils.copyProperties(request, shortLink);
+        shortLink.setSign(CommonUtil.MD5(request.getOriginalUrl()));
         shortLink.setCode(ShortLinkCodeUtil.createShortLinkCode(request.getOriginalUrl()));
         boolean save = save(shortLink);
         AssertUtils.isTrue(save, BizCodeEnum.LINK_ADD_FAIL);

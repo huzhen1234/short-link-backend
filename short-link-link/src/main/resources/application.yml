@@ -75,7 +75,7 @@ spring:
                 sharding-column: account_no
                 sharding-algorithm-name: group-inline
           short_link:
-            actual-data-nodes: ds0.short_link,ds1.short_link,dsa.short_link
+            actual-data-nodes: ds$->{0..1}.short_link_0,ds$->{0..1}.short_link_a,dsa.short_link_0,dsa.short_link_a
             database-strategy:
               standard:
                 sharding-column: code
