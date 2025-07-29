@@ -9,6 +9,7 @@ import com.hutu.shortlinkcommon.util.CommonUtil;
 import com.hutu.shortlinklink.domain.pojo.LinkGroup;
 import com.hutu.shortlinklink.domain.pojo.ShortLink;
 import com.hutu.shortlinklink.domain.req.ShortLinkAddRequest;
+import com.hutu.shortlinklink.domain.vo.ShortLinkVO;
 import com.hutu.shortlinklink.service.LinkGroupService;
 import com.hutu.shortlinklink.service.ShortLinkService;
 import com.hutu.shortlinklink.mapper.ShortLinkMapper;
@@ -42,6 +43,17 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         boolean save = save(shortLink);
         AssertUtils.isTrue(save, BizCodeEnum.LINK_ADD_FAIL);
         return Boolean.TRUE;
+    }
+
+    @Override
+    public ShortLinkVO parseShortLinkCode(String shortLinkCode) {
+        ShortLink one = lambdaQuery().eq(ShortLink::getCode, shortLinkCode).one();
+        if (one != null) {
+            ShortLinkVO shortLinkVO = new ShortLinkVO();
+            BeanUtils.copyProperties(one, shortLinkVO);
+            return shortLinkVO;
+        }
+        return null;
     }
 }
 
