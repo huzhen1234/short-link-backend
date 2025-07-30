@@ -13,7 +13,7 @@ import com.hutu.shortlinklink.domain.vo.ShortLinkVO;
 import com.hutu.shortlinklink.service.LinkGroupService;
 import com.hutu.shortlinklink.service.ShortLinkService;
 import com.hutu.shortlinklink.mapper.ShortLinkMapper;
-import com.hutu.shortlinklink.utils.ShortLinkCodeUtil;
+import com.hutu.shortlinklink.utils.ShortLinkUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -29,6 +29,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     implements ShortLinkService{
 
     private final LinkGroupService linkGroupService;
+    private final ShortLinkUtil shortLinkUtil;
 
     @Override
     public Boolean createShortLink(ShortLinkAddRequest request) {
@@ -39,7 +40,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         ShortLink shortLink = new ShortLink();
         BeanUtils.copyProperties(request, shortLink);
         shortLink.setSign(CommonUtil.MD5(request.getOriginalUrl()));
-        shortLink.setCode(ShortLinkCodeUtil.createShortLinkCode(request.getOriginalUrl()));
+        shortLink.setCode(shortLinkUtil.createShortLinkCode(request.getOriginalUrl()));
         boolean save = save(shortLink);
         AssertUtils.isTrue(save, BizCodeEnum.LINK_ADD_FAIL);
         return Boolean.TRUE;

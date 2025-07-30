@@ -94,6 +94,7 @@ spring:
             props:
               strategy: STANDARD
               algorithmClassName: com.hutu.shortlinklink.strategy.LinkDataBaseShardingAlgorithm
+#              auto-aware-data-source-name: true
           link-sharding-table-algorithm:
             type: CLASS_BASED
             props:

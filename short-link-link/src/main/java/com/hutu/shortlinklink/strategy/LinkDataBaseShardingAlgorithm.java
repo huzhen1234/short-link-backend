@@ -28,19 +28,12 @@ public class LinkDataBaseShardingAlgorithm implements StandardShardingAlgorithm<
      */
     @Override
     public String doSharding(Collection<String> collection, PreciseShardingValue<String> preciseShardingValue) {
-
-        //获取短链码第一位，即库位
-        String codePrefix = preciseShardingValue.getValue().substring(0, 1);
-        for (String targetName : collection) {
-            //获取库名的最后一位，真实配置的ds
-            String targetNameSuffix = targetName.substring(targetName.length() - 1);
-            //如果一致则返回
-            if (codePrefix.equals(targetNameSuffix)) {
-                return targetName;
-            }
-        }
-        //抛异常
-        throw new BizException(BizCodeEnum.DB_ROUTE_NOT_FOUND);
+        String code = preciseShardingValue.getValue();
+        String dbSuffix = code.substring(0, 1); // 提取第一位库标识
+        return collection.stream()
+                .filter(target -> target.endsWith(dbSuffix))
+                .findFirst()
+                .orElseThrow(() -> new BizException(BizCodeEnum.DB_ROUTE_NOT_FOUND));
     }
 
     @Override

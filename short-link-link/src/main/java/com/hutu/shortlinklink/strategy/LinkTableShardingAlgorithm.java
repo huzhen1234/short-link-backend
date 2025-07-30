@@ -28,14 +28,17 @@ public class LinkTableShardingAlgorithm implements StandardShardingAlgorithm<Str
      */
     @Override
     public String doSharding(Collection<String> collection, PreciseShardingValue<String> preciseShardingValue) {
-        //获取逻辑表
-        String targetName = preciseShardingValue.getLogicTableName();
-        //短链码  A23Ad1
-        String value = preciseShardingValue.getValue();
-        //获取短链码最后一位
-        String codeSuffix =  value.substring(value.length()-1);
-        //拼接 Actual table
-        return targetName+"_"+codeSuffix;
+        String code = preciseShardingValue.getValue();
+        String tableSuffix = code.substring(code.length() - 1); // 提取最后一位表标识
+        String logicTableName = preciseShardingValue.getLogicTableName();
+        // 构建实际表名：logicTableName + "_" + tableSuffix
+        String targetTable = logicTableName + "_" + tableSuffix;
+        // 验证表是否存在（防止新增表位后未创建表）
+        if (collection.contains(targetTable)) {
+            return targetTable;
+        }
+        // 自动降级：表不存在时返回第一个可用表
+        return collection.iterator().next();
     }
 
     @Override
