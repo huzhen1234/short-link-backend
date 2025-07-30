@@ -19,7 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 /**
-* @author EDY
+* @author hutu
 * @description 针对表【short_link(短链接信息表)】的数据库操作Service实现
 * @createDate 2025-07-25 14:52:42
 */
