@@ -19,7 +19,7 @@ public class LinkTableShardingAlgorithm implements StandardShardingAlgorithm<Str
     /**
      * 精准分片
      * @param collection 当前 SQL 所涉及的分片目标名称集合。
-     *                   - 如果是分库：collection 是所有数据库名（如 ds_0, ds_1）
+     *                   - 如果是分库：collection 是所有数据库名（如 ds_0, ds_1）会根据yml对应的库、表做解析，获取对应的库表。
      *                   - 如果是分表：collection 是所有实际表名（如 link_mapping_0, link_mapping_1）
      * @param preciseShardingValue        分片属性，包括
      *                             logicTableName 为逻辑表，
