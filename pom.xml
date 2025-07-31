@@ -35,6 +35,7 @@
         <minio.version>8.5.2</minio.version>
         <jwt.version>0.11.2</jwt.version>
         <mysql.version>8.0.33</mysql.version>
+        <rocketmq.version>2.3.1</rocketmq.version>
         <captcha.version>2.3.2</captcha.version>
     </properties>
 
@@ -144,6 +145,13 @@
 <!--                <artifactId>snakeyaml</artifactId>-->
 <!--                <version>1.33</version>-->
 <!--            </dependency>-->
+
+            <!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-spring-boot-starter -->
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

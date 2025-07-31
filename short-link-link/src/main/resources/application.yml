@@ -105,9 +105,9 @@ spring:
               strategy: STANDARD
               algorithmClassName: com.hutu.shortlinklink.strategy.LinkTableShardingAlgorithm
           default-db-algo:
-            type: VALUE
+            type: INLINE
             props:
-              operation: ds0  # 所有没有配置的表都默认路由到 ds0
+              algorithm-expression: ds0  # 所有没有配置的表都默认路由到 ds0
     props:
       sql-show: true
 
@@ -116,7 +116,29 @@ spring:
 #mybatis-plus:
 #  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
+rocketmq:
+  # 多个nameserver用分号隔开
+  name-server: localhost:9876
+  #生产者
+  producer:
+    # 发送同一类消息的设置为同一个group，保证唯一
+    group: springboot_producer_group
+    # 发送消息超时时间，默认3000
+    sendMessageTimeout: 10000
+    # 发送消息失败重试次数，默认2
+    retryTimesWhenSendFailed: 2
+    # 异步消息重试此处，默认2
+    retryTimesWhenSendAsyncFailed: 2
+    # 消息最大长度，默认1024 * 1024 * 4(默认4M)
+    maxMessageSize: 4096
+    # 压缩消息阈值，默认4k(1024 * 4)
+    compressMessageBodyThreshold: 4096
+    # 是否在内部发送失败时重试另一个broker，默认false
+    retryNextServer: false
+  consumer:
+    group: springboot_consumer_group
+    # 批量拉取消息大小
+    pull-batch-size: 10
 
 # minio 配置
 minio:
