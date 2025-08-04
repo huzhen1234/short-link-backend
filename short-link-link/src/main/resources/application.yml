@@ -136,7 +136,7 @@ rocketmq:
     # 是否在内部发送失败时重试另一个broker，默认false
     retryNextServer: false
   consumer:
-    group: springboot_consumer_group
+#    group: springboot_consumer_group
     # 批量拉取消息大小
     pull-batch-size: 10
 

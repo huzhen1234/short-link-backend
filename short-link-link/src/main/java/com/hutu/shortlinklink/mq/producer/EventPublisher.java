@@ -22,7 +22,7 @@ public class EventPublisher {
     /**
      * 普通消息（同步发送）
      */
-    public void publish(String topic, BaseEvent<?> message) {
+    public void publish(String topic, BaseEvent message) {
         try {
             String mqMessage = JSON.toJSONString(message);
             log.info("[普通消息] 发送MQ消息 topic:{} message:{}", topic, mqMessage);
@@ -35,7 +35,7 @@ public class EventPublisher {
     /**
      * 延迟消息（同步发送）
      */
-    public void publishDelivery(String topic, BaseEvent<?> message, int delayTimeLevel) {
+    public void publishDelivery(String topic, BaseEvent message, int delayTimeLevel) {
         try {
             String mqMessage = JSON.toJSONString(message);
             log.info("[延迟消息] 发送MQ消息 topic:{} level:{} message:{}",
@@ -59,7 +59,7 @@ public class EventPublisher {
      *
      * @param callback 发送结果回调
      */
-    public void publishAsync(String topic, BaseEvent<?> message, SendCallback callback) {
+    public void publishAsync(String topic, BaseEvent message, SendCallback callback) {
         try {
             String mqMessage = JSON.toJSONString(message);
             log.info("[异步消息] 发送MQ消息 topic:{} message:{}", topic, mqMessage);
@@ -77,7 +77,7 @@ public class EventPublisher {
     /**
      * 单向发送（不关心结果）
      */
-    public void publishOneWay(String topic, BaseEvent<?> message) {
+    public void publishOneWay(String topic, BaseEvent message) {
         try {
             String mqMessage = JSON.toJSONString(message);
             log.info("[单向消息] 发送MQ消息 topic:{} message:{}", topic, mqMessage);
@@ -93,7 +93,7 @@ public class EventPublisher {
      *
      * @param tag 消息标签（用于消费端过滤）
      */
-    public void publishWithTag(String topic, String tag, BaseEvent<?> message) {
+    public void publishWithTag(String topic, String tag, BaseEvent message) {
         try {
             String mqMessage = JSON.toJSONString(message);
             String destination = topic + ":" + tag;
@@ -111,7 +111,7 @@ public class EventPublisher {
      *
      * @param shardingKey 分区键（相同键的消息保证顺序）
      */
-    public void publishOrderly(String topic, BaseEvent<?> message, String shardingKey) {
+    public void publishOrderly(String topic, BaseEvent message, String shardingKey) {
         try {
             String mqMessage = JSON.toJSONString(message);
             log.info("[顺序消息] 发送MQ消息 topic:{} key:{} message:{}",
@@ -131,7 +131,7 @@ public class EventPublisher {
     /**
      * 带TAG的延迟消息
      */
-    public void publishDeliveryWithTag(String topic, String tag, BaseEvent<?> message, int delayLevel) {
+    public void publishDeliveryWithTag(String topic, String tag, BaseEvent message, int delayLevel) {
         try {
             String mqMessage = JSON.toJSONString(message);
             String destination = topic + ":" + tag;
