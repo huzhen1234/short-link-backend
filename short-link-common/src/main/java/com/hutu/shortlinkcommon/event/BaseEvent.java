@@ -1,11 +1,17 @@
 package com.hutu.shortlinkcommon.event;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 /**
  * mq 事件
  */
 @Data
+@RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 public class BaseEvent {
     /**
      * 消息队列ID

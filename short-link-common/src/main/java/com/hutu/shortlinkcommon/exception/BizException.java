@@ -4,11 +4,16 @@ import com.hutu.shortlinkcommon.enums.BizCodeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serial;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class BizException extends RuntimeException {
 
-    private int code;
+    @Serial
+    private static final long serialVersionUID = -2609067725385471243L;
+
+    private Integer code;
 
     private String msg;
 

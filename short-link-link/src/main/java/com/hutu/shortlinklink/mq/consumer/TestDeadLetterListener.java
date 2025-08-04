@@ -1,6 +1,5 @@
 package com.hutu.shortlinklink.mq.consumer;
 
-import com.hutu.shortlinkcommon.common.RocketMQConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -9,40 +8,40 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+/**
+ * 测试死信队列监听器
+ */
 @Component
 @RocketMQMessageListener(
-    // 监听add-link消费者组的死信队列
-    topic = "%DLQ%" + RocketMQConstant.GROUP_SHORT_LINK_EVENT_CONSUMER_ADD_LINK,
-    consumerGroup = RocketMQConstant.GROUP_DLQ_HANDLER + "_add_link"
+    // 监听所有可能的死信队列
+    topic = "%DLQ%group_short_link_event_consumer_add_link",
+    consumerGroup = "test-dlq-consumer-group"
 )
 @Slf4j
-public class StudentDlqListener implements RocketMQListener<MessageExt> {
+public class TestDeadLetterListener implements RocketMQListener<MessageExt> {
     
     @PostConstruct
     public void init() {
-        log.info("=== 死信队列监听器初始化 ===");
-        log.info("监听Topic: %DLQ%{}", RocketMQConstant.GROUP_SHORT_LINK_EVENT_CONSUMER_ADD_LINK);
-        log.info("消费者组: {}", RocketMQConstant.GROUP_DLQ_HANDLER + "_add_link");
-        log.info("========================");
+        log.info("=== TestDeadLetterListener 初始化 ===");
+        log.info("监听Topic: %DLQ%group_short_link_event_consumer_add_link");
+        log.info("消费者组: test-dlq-consumer-group");
+        log.info("================================");
     }
     
     @Override
     public void onMessage(MessageExt message) {
         try {
-            log.error("=== 收到死信消息 ===");
+            log.error("=== TestDeadLetterListener 收到死信消息 ===");
             log.error("Topic: {}", message.getTopic());
             log.error("Tags: {}", message.getTags());
             log.error("Keys: {}", message.getKeys());
             log.error("消息内容: {}", new String(message.getBody()));
             log.error("重试次数: {}", message.getReconsumeTimes());
             log.error("消息ID: {}", message.getMsgId());
-            log.error("==================");
-            
-            // 这里可以添加告警、补偿等逻辑
-            // 比如发送邮件、短信通知，或者记录到数据库
+            log.error("=====================================");
             
         } catch (Exception e) {
-            log.error("处理死信消息异常: {}", e.getMessage(), e);
+            log.error("TestDeadLetterListener 处理死信消息异常: {}", e.getMessage(), e);
         }
     }
-}
+} 
