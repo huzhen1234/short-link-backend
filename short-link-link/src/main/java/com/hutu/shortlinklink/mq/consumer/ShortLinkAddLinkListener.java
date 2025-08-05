@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RocketMQMessageListener(topic = RocketMQConstant.TOPIC_SHORT_LINK_EVENT
-        , consumerGroup = RocketMQConstant.GROUP_SHORT_LINK_EVENT_CONSUMER_ADD_LINK
+        , consumerGroup = RocketMQConstant.CONSUMER_GROUP_ADD_LINK
         , selectorExpression = RocketMQConstant.TAG_SHORT_LINK_ADD_LINK
         , maxReconsumeTimes = 1)
 @Slf4j

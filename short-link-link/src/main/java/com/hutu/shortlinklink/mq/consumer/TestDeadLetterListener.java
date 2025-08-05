@@ -1,5 +1,6 @@
 package com.hutu.shortlinklink.mq.consumer;
 
+import com.hutu.shortlinkcommon.common.RocketMQConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
@@ -14,8 +15,8 @@ import javax.annotation.PostConstruct;
 @Component
 @RocketMQMessageListener(
     // 监听所有可能的死信队列
-    topic = "%DLQ%group_short_link_event_consumer_add_link",
-    consumerGroup = "test-dlq-consumer-group"
+    topic = RocketMQConstant.DLQ_TOPIC_PREFIX + RocketMQConstant.TOPIC_SHORT_LINK_EVENT,
+    consumerGroup = RocketMQConstant.CONSUMER_GROUP_DLQ_HANDLER
 )
 @Slf4j
 public class TestDeadLetterListener implements RocketMQListener<MessageExt> {

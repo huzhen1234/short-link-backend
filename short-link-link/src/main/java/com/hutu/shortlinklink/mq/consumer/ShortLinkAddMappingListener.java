@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RocketMQMessageListener(topic = RocketMQConstant.TOPIC_SHORT_LINK_EVENT
-        , consumerGroup = RocketMQConstant.GROUP_SHORT_LINK_EVENT_CONSUMER_ADD_MAPPING
+        , consumerGroup = RocketMQConstant.TAG_SHORT_LINK_ADD_MAPPING
         , selectorExpression = RocketMQConstant.TAG_SHORT_LINK_ADD_MAPPING
         // 设置最大重试次数
-        , maxReconsumeTimes = 3)
+        , maxReconsumeTimes = 1)
 @Slf4j
 public class ShortLinkAddMappingListener implements RocketMQListener<String> {
 
