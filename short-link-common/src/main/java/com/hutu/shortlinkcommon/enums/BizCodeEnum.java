@@ -127,7 +127,9 @@ public enum BizCodeEnum {
     /**
      * 文件相关
      */
-    FILE_UPLOAD_USER_IMG_FAIL(700101,"用户头像文件上传失败");
+    FILE_UPLOAD_USER_IMG_FAIL(700101,"用户头像文件上传失败"),
+
+    MQ_CONSUME_EXCEPTION(900101,"消费者消费异常");
 
     @Getter
     private final String message;

@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
 
 
 @Slf4j
@@ -65,6 +66,32 @@ public class JsonUtil {
         }
         return obj;
     }
+
+    /**
+     * json字符串转为泛型对象
+     */
+    public static <T> T json2Obj(String jsonStr, Class<?> parametrized, Class<?>... parameterClasses) {
+        if (jsonStr == null || jsonStr.trim().isEmpty()) {
+            log.warn("json2Obj输入为空");
+            return null;
+        }
+
+        try {
+            JavaType javaType = mapper.getTypeFactory().constructParametricType(
+                    Objects.requireNonNull(parametrized, "参数化类型不能为null"),
+                    parameterClasses);
+            return mapper.readValue(jsonStr, javaType);
+        } catch (JsonProcessingException e) {
+            log.error("JSON处理失败, 原始JSON: {}, 错误: {}", jsonStr, e.getMessage(), e);
+        } catch (IllegalArgumentException e) {
+            log.error("参数不合法: {}", e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("意外的JSON解析错误: {}", e.getMessage(), e);
+        }
+
+        return null;
+    }
+
 
 
     /**

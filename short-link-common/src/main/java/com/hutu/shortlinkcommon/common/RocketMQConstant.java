@@ -10,10 +10,6 @@ public class RocketMQConstant {
      */
     public static final String TOPIC_SHORT_LINK = "topic-short-link";
 
-    /**
-     * 短链主题
-     */
-    public static final String TOPIC_MAPPING = "topic-mapping";
 
     /**
      * 短链事件 MQ TAG add-link
