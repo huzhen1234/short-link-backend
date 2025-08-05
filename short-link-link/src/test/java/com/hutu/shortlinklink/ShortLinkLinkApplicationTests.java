@@ -80,7 +80,7 @@ class ShortLinkLinkApplicationTests {
     @Test
     void testSendWithTag() {
         // 测试带TAG的消息发送
-        eventPublisher.publishWithTag(RocketMQConstant.TOPIC_SHORT_LINK_EVENT
+        eventPublisher.publishWithTag(RocketMQConstant.TOPIC_SHORT_LINK
                 , RocketMQConstant.TAG_SHORT_LINK_ADD_LINK
                 , BaseEvent.builder()
                         .data("test-with-tag")
@@ -91,14 +91,14 @@ class ShortLinkLinkApplicationTests {
                         .eventMessageType("test-tag")
                         .build());
         
-        System.out.println("已发送带TAG的消息到: " + RocketMQConstant.TOPIC_SHORT_LINK_EVENT + ":" + RocketMQConstant.TAG_SHORT_LINK_ADD_LINK);
+        System.out.println("已发送带TAG的消息到: " + RocketMQConstant.TOPIC_SHORT_LINK + ":" + RocketMQConstant.TAG_SHORT_LINK_ADD_LINK);
     }
 
     @Test
     void testDeadLetterQueue() throws InterruptedException {
         // 测试死信队列功能
         // 发送消息到add-link消费者，该消费者会抛出异常，触发重试后进入死信队列
-        eventPublisher.publishWithTag(RocketMQConstant.TOPIC_SHORT_LINK_EVENT
+        eventPublisher.publishWithTag(RocketMQConstant.TOPIC_SHORT_LINK
                 , RocketMQConstant.TAG_SHORT_LINK_ADD_LINK
                 , BaseEvent.builder()
                         .data("test-dlq")

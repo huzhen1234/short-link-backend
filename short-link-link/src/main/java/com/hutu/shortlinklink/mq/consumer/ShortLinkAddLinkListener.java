@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
  * MessageExt可以接收全部的信息
  */
 @Component
-@RocketMQMessageListener(topic = RocketMQConstant.TOPIC_SHORT_LINK_EVENT
+@RocketMQMessageListener(topic = RocketMQConstant.TOPIC_SHORT_LINK
         , consumerGroup = RocketMQConstant.CONSUMER_GROUP_ADD_LINK
-        , selectorExpression = RocketMQConstant.TAG_SHORT_LINK_ADD_LINK
+//        , selectorExpression = RocketMQConstant.TAG_SHORT_LINK_ADD_LINK
         , maxReconsumeTimes = 1)
 @Slf4j
 public class ShortLinkAddLinkListener implements RocketMQListener<String> {

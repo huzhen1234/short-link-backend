@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 @Component
 @RocketMQMessageListener(
     // 监听所有可能的死信队列
-    topic = RocketMQConstant.DLQ_TOPIC_PREFIX + RocketMQConstant.TOPIC_SHORT_LINK_EVENT,
+    topic = RocketMQConstant.DLQ_TOPIC_PREFIX + RocketMQConstant.TOPIC_SHORT_LINK,
     consumerGroup = RocketMQConstant.CONSUMER_GROUP_DLQ_HANDLER
 )
 @Slf4j

@@ -6,9 +6,14 @@ import lombok.Data;
 public class RocketMQConstant {
 
     /**
-     * 短链事件  MQ 主题
+     * 短链主题
      */
-    public static final String TOPIC_SHORT_LINK_EVENT = "short-link-topic";
+    public static final String TOPIC_SHORT_LINK = "topic-short-link";
+
+    /**
+     * 短链主题
+     */
+    public static final String TOPIC_MAPPING = "topic-mapping";
 
     /**
      * 短链事件 MQ TAG add-link
