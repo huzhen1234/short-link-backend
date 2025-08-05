@@ -148,6 +148,21 @@ public class CommonUtil {
         return saltString.toString();
     }
 
+    /**
+     * URL增加前缀
+     */
+    public static String addUrlPrefix(String url){
+        return IDUtil.generateSnowflakeId()+"&"+url;
+
+    }
+
+    /**
+     * 移除URL前缀
+     */
+    public static String removeUrlPrefix(String url){
+        return url.substring(url.indexOf("&")+1);
+    }
+
 
     /**
      * 响应json数据给前端
