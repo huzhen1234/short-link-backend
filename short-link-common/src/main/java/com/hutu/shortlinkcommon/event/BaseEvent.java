@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BaseEvent {
+public class BaseEvent<T> {
     /**
      * 消息队列ID
      */
@@ -41,5 +41,5 @@ public class BaseEvent {
     /**
      * 消息体
      */
-    private String data;
+    private T data;
 }

@@ -4,7 +4,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 短链表-商家维度
@@ -12,6 +16,9 @@ import lombok.Data;
  */
 @TableName(value ="group_code_mapping")
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
+@Builder
 public class GroupCodeMapping {
     /**
      * 

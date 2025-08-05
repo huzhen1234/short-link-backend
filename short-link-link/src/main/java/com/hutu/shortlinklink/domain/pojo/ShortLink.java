@@ -5,7 +5,11 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 短链接信息表
@@ -13,6 +17,9 @@ import lombok.Data;
  */
 @TableName(value ="short_link")
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
+@Builder
 public class ShortLink {
     /**
      * 

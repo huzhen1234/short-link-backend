@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 public class GroupCodeMappingServiceImpl extends ServiceImpl<GroupCodeMappingMapper, GroupCodeMapping>
     implements GroupCodeMappingService{
 
+    @Override
+    public GroupCodeMapping findByCodeAndGroupId(String shortLinkCode, Long accountNo) {
+        return lambdaQuery().eq(GroupCodeMapping::getCode, shortLinkCode).eq(GroupCodeMapping::getAccountNo, accountNo).one();
+    }
 }
 
 
