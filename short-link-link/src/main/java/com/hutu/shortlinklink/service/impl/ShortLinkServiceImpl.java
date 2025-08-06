@@ -27,13 +27,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.SendCallback;
 import org.apache.rocketmq.client.producer.SendResult;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Collections;
 
 /**
  * @author hutu
@@ -46,14 +45,12 @@ import java.util.concurrent.TimeUnit;
 public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink>
         implements ShortLinkService {
 
-    private final static String LOCK_KEY_PREFIX = "short_link:add:";
-
     private final LinkGroupService linkGroupService;
     private final ShortLinkUtil shortLinkUtil;
     private final EventPublisher eventPublisher;
     private final RedisTemplate<String, String> redisTemplate;
     private final GroupCodeMappingService mappingService;
-    private final RedissonClient redissonClient;
+    private static final int LOCK_EXPIRE_SECONDS = 100;
 
     @Override
     public Boolean createShortLink(ShortLinkAddRequest request) {
@@ -102,19 +99,16 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         String shortLinkCode = shortLinkUtil.createShortLinkCode(addRequest.getOriginalUrl());
         Long accountNo = baseEvent.getAccountNo();
         String eventMessageType = baseEvent.getEventMessageType();
+        //加锁
+        //key1是短链码，ARGV[1]是accountNo,ARGV[2]是过期时间
+        String script = "if redis.call('EXISTS',KEYS[1])==0 then redis.call('set',KEYS[1],ARGV[1]); redis.call('expire',KEYS[1],ARGV[2]); return 1;" +
+                " elseif redis.call('get',KEYS[1]) == ARGV[1] then return 2;" +
+                " else return 0; end;";
 
-        RLock lock = redissonClient.getLock(LOCK_KEY_PREFIX + accountNo);
-        // 使用更合理的锁等待和持有时间
-        boolean triedLock = lock.tryLock(1, 5, TimeUnit.SECONDS);
-
-        if (!triedLock) {
-            log.error("短链码加锁失败:{}", JsonUtil.obj2Json(baseEvent));
-            return retryWithNewUrl(baseEvent, addRequest);
-        }
-
-        try {
-            boolean isDuplicate = false;
-
+        Long result = redisTemplate.execute(new
+                DefaultRedisScript<>(script, Long.class), Collections.singletonList(shortLinkCode), accountNo, LOCK_EXPIRE_SECONDS);
+        boolean isDuplicate = false;
+        if (result > 0) {
             if (EventMessageType.SHORT_LINK_ADD_LINK.name().equalsIgnoreCase(eventMessageType)) {
                 isDuplicate = handleCShortLink(accountNo, shortLinkCode, addRequest, sign);
             } else if (EventMessageType.SHORT_LINK_ADD_MAPPING.name().equalsIgnoreCase(eventMessageType)) {
@@ -123,15 +117,14 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                 log.error("未知的事件类型:{}", eventMessageType);
                 return false;
             }
-
-            if (isDuplicate) {
-                return retryWithNewUrl(baseEvent, addRequest);
-            }
-
-            return true;
-        } finally {
-            lock.unlock();
+        } else {
+            log.error("短链码加锁失败:{}", JsonUtil.obj2Json(baseEvent));
+            return retryWithNewUrl(baseEvent, addRequest);
         }
+        if (isDuplicate) {
+            return retryWithNewUrl(baseEvent, addRequest);
+        }
+        return true;
     }
 
     @Override
