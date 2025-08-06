@@ -1,10 +1,11 @@
 package com.hutu.shortlinklink.utils;
 
 import com.google.common.hash.Hashing;
-import com.hutu.shortlinklink.config.ShardingWeightConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -13,7 +14,29 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ShortLinkUtil {
     private static final String CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    private final ShardingWeightConfig weightConfig;
+//    private final ShardingWeightConfig weightConfig;
+
+    /**
+     * 存储数据表位置编号
+     */
+    private static final List<String> tableSuffixList = new ArrayList<>();
+
+    /**
+     * 存储数据库位置编号
+     */
+    private static final List<String> dbPrefixList = new ArrayList<>();
+
+    static {
+        //配置启用那些表的后缀
+        tableSuffixList.add("0");
+        tableSuffixList.add("a");
+
+        //配置启用那些库的前缀
+        dbPrefixList.add("0");
+        dbPrefixList.add("1");
+        dbPrefixList.add("a");
+    }
+
 
     /**
      * murmurhash算法
@@ -29,7 +52,7 @@ public class ShortLinkUtil {
      * @param originalUrl 原始长链
      * @return db编码+6位短链编码
      */
-    public String createShortLinkCode(String originalUrl) {
+/*    public String createShortLinkCode(String originalUrl) {
         // 2. 按权重选择库后缀
         String dbSuffix = selectByWeight(
                 weightConfig.getDatabaseWeights()
@@ -44,7 +67,41 @@ public class ShortLinkUtil {
         // 4. 组合8位码：库位 + 短码 + 表位
         return dbSuffix + encodeToBase62(murmurHash32(originalUrl)) + tableSuffix;
 //        return ShardingDBConfig.getRandomDBPrefix() + encodeToBase62(murmurHash32(originalUrl)) + ShardingTableConfig.getRandomTableSuffix();
+    }*/
+
+
+    public String createShortLinkCode(String originalUrl) {
+        // 同样的originalUrl生成的murmurhash时一致的
+        long murmurhash = murmurHash32(originalUrl);
+        //进制转换
+        String code = encodeToBase62(murmurhash);
+        // 保证不同平台下短链编码唯一
+        return getRandomDBPrefix(code) + code + getRandomTableSuffix(code);
     }
+
+
+    /**
+     * 获取随机的前缀
+     * @return
+     */
+    public static String getRandomDBPrefix(String code){
+
+        int hashCode = code.hashCode();
+
+        int index = Math.abs(hashCode) % dbPrefixList.size();
+
+        return dbPrefixList.get(index);
+    }
+
+    public static String getRandomTableSuffix(String code ){
+
+        int hashCode = code.hashCode();
+
+        int index = Math.abs(hashCode) % tableSuffixList.size();
+
+        return tableSuffixList.get(index);
+    }
+
 
 
     /**
