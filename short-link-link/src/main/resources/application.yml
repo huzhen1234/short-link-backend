@@ -84,6 +84,17 @@ spring:
               standard:
                 sharding-column: code
                 sharding-algorithm-name: link-sharding-table-algorithm
+          group_code_mapping:
+            actual-data-nodes: ds$->{0..1}.group_code_mapping_$->{0..1}
+            database-strategy:
+              standard:
+                sharding-column: account_no
+                sharding-algorithm-name: code-mapping
+            table-strategy:
+              standard:
+                sharding-column: group_id
+                sharding-algorithm-name: code-mapping-table
+
         # 默认数据库
         default-database-strategy:
           standard:
@@ -104,6 +115,14 @@ spring:
             props:
               strategy: STANDARD
               algorithmClassName: com.hutu.shortlinklink.strategy.LinkTableShardingAlgorithm
+          code-mapping:
+            type: INLINE
+            props:
+              algorithm-expression: ds$->{account_no % 2}
+          code-mapping-table:
+            type: INLINE
+            props:
+              algorithm-expression: group_code_mapping_$->{group_id % 2}
           default-db-algo:
             type: INLINE
             props:
@@ -136,7 +155,7 @@ rocketmq:
     # 是否在内部发送失败时重试另一个broker，默认false
     retryNextServer: false
   consumer:
-#    group: springboot_consumer_group
+    #    group: springboot_consumer_group
     # 批量拉取消息大小
     pull-batch-size: 10
 
