@@ -114,9 +114,12 @@ class ShortLinkLinkApplicationTests {
         System.out.println("等待消息处理和重试...");
         
         // 等待足够的时间让消息处理、重试和进入死信队列
-        Thread.sleep(10000);
+        // 由于maxReconsumeTimes=1，消息会重试1次后进入死信队列
+        System.out.println("等待15秒，确保消息重试完成并进入死信队列...");
+        Thread.sleep(15000);
         
         System.out.println("死信队列测试完成");
+        System.out.println("请检查控制台是否有死信队列监听器的日志输出");
     }
 
 }
