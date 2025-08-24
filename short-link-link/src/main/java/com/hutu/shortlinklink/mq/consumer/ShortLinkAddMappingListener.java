@@ -10,7 +10,6 @@ import com.hutu.shortlinkcommon.util.JsonUtil;
 import com.hutu.shortlinklink.domain.req.ShortLinkAddRequest;
 import com.hutu.shortlinklink.service.ShortLinkService;
 import lombok.RequiredArgsConstructor;
-import com.hutu.shortlinkcommon.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;

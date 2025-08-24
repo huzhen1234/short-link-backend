@@ -49,4 +49,8 @@ public class RocketMQConstant {
      */
     public static final String DLQ_TOPIC_PREFIX = "%DLQ%";
 
+    /**
+     * 死信队列消费者组
+     */
+    public static final String GROUP_DLQ_HANDLER = "dlq_add_link";
 }
