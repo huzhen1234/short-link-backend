@@ -4,6 +4,7 @@ import com.hutu.shortlinkcommon.enums.ShortLinkStateEnum;
 import com.hutu.shortlinkcommon.util.CommonUtil;
 import com.hutu.shortlinklink.domain.vo.ShortLinkVO;
 import com.hutu.shortlinklink.service.ShortLinkService;
+import com.hutu.shortlinklink.utils.ShortLinkUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,8 @@ public class LinkApiController {
 
 
     private final ShortLinkService shortLinkService;
+
+    private final ShortLinkUtil shortLinkUtil;
 
 
     /**
@@ -52,7 +55,7 @@ public class LinkApiController {
                 ShortLinkVO shortLinkVO = shortLinkService.parseShortLinkCode(shortLinkCode);
                 //判断是否过期和可用
                 if (isVisitable(shortLinkVO)) {
-                    response.setHeader("Location", CommonUtil.removeUrlPrefix(shortLinkVO.getOriginalUrl()));
+                    response.setHeader("Location", shortLinkUtil.removeUrlPrefix(shortLinkVO.getOriginalUrl()));
 //                    response.sendRedirect(shortLinkVO.getOriginalUrl()); 默认也是302跳转
                     //302跳转
                     response.setStatus(HttpStatus.FOUND.value());

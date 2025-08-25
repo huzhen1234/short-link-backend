@@ -30,32 +30,6 @@ public class ShortLinkAddLinkListener implements RocketMQListener<String> {
 
     private final ShortLinkService shortLinkService;
 
-
-    /*@Override
-    public void onMessage(String message) {
-        try {
-            log.info("=== 开始处理消息 ShortLinkAddLinkListener ===");
-            log.info("消息内容: {}", message);
-            log.info("处理时间: {}", new java.util.Date());
-            log.info("线程: {}", Thread.currentThread().getName());
-            
-            // 处理消息的逻辑
-            System.out.println("=== 消费者收到消息 ShortLinkAddLinkListener ===");
-            System.out.println("消息内容: " + message);
-            System.out.println("处理时间: " + new java.util.Date());
-            System.out.println("线程: " + Thread.currentThread().getName());
-            System.out.println("=====================");
-            
-            log.info("=== 消息处理完成 ShortLinkAddLinkListener ===");
-
-            throw new BizException(500,"ceshi");
-
-        } catch (Exception e) {
-            log.error("消息处理异常: {}", e.getMessage(), e);
-            throw e; // 重新抛出异常，让RocketMQ进行重试
-        }
-    }*/
-
     @Override
     public void onMessage(String message) {
         try {

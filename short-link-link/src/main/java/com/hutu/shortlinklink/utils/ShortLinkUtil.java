@@ -1,6 +1,7 @@
 package com.hutu.shortlinklink.utils;
 
 import com.google.common.hash.Hashing;
+import com.hutu.shortlinkcommon.util.IDUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -76,29 +77,25 @@ public class ShortLinkUtil {
         //进制转换
         String code = encodeToBase62(murmurhash);
         // 保证不同平台下短链编码唯一
+        // 上面生成的code是不变的，然后前缀和后缀是变化的，就会导致不一致。通过不变的来生成变化的。使用hash方式
         return getRandomDBPrefix(code) + code + getRandomTableSuffix(code);
     }
 
 
     /**
-     * 获取随机的前缀
-     * @return
+     * code是不变的，
      */
     public static String getRandomDBPrefix(String code){
-
+        // hash方式，相同的hashcode一致
         int hashCode = code.hashCode();
-
         int index = Math.abs(hashCode) % dbPrefixList.size();
-
         return dbPrefixList.get(index);
     }
 
     public static String getRandomTableSuffix(String code ){
-
+        // hash方式，相同的hashcode一致
         int hashCode = code.hashCode();
-
         int index = Math.abs(hashCode) % tableSuffixList.size();
-
         return tableSuffixList.get(index);
     }
 
@@ -138,5 +135,39 @@ public class ShortLinkUtil {
         }
         // 理论上不会执行到此处
         return weightMap.keySet().iterator().next();
+    }
+
+    /**
+     * URL增加前缀
+     * 目的：避免短链码重复，相同的原始URL可以生成不同的短链code
+     * 可以投递到不同的平台，比如投递到：抖音，快手，微博等等
+     */
+    public String addUrlPrefix(String url){
+        return IDUtil.generateSnowflakeId()+"&"+url;
+
+    }
+
+    /**
+     * 移除URL前缀
+     * 使用前移除掉
+     */
+    public String removeUrlPrefix(String url){
+        return url.substring(url.indexOf("&")+1);
+    }
+
+    /**
+     * 如果短链码重复，则调用这个方法
+     * url前缀的编号递增1
+     * 如果还是用雪花算法，TODO 则容易C端和B端不一致，所以采用编号递增1的方式
+     * 123132432212&https://xxx.com
+     */
+    public String addUrlPrefixVersion(String url){
+        //随机id
+        String version = url.substring(0,url.indexOf("&"));
+        //原始地址
+        String originalUrl = url.substring(url.indexOf("&")+1);
+        //新id
+        Long newVersion = Long.parseLong(version)+1;
+        return newVersion + "&"+originalUrl;
     }
 }

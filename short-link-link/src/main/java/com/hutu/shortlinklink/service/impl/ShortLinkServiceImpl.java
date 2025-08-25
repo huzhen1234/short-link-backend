@@ -58,15 +58,8 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         AssertUtils.notNull(currentAccountInfo, BizCodeEnum.JWT_PARSE_ERROR);
         LinkGroup linkGroup = linkGroupService.findByAccountNoAndId(currentAccountInfo.getAccountNo(), request.getGroupId());
         AssertUtils.notNull(linkGroup, BizCodeEnum.GROUP_NOT_EXIST);
-
-/*        ShortLink shortLink = new ShortLink();
-        BeanUtils.copyProperties(request, shortLink);
-        shortLink.setSign(CommonUtil.MD5(request.getOriginalUrl()));
-        shortLink.setCode(shortLinkUtil.createShortLinkCode(request.getOriginalUrl()));
-        boolean save = save(shortLink);
-        AssertUtils.isTrue(save, BizCodeEnum.LINK_ADD_FAIL);*/
-
-        String newOriginalUrl = CommonUtil.addUrlPrefix(request.getOriginalUrl());
+        // 原始URL随机拼接
+        String newOriginalUrl = shortLinkUtil.addUrlPrefix(request.getOriginalUrl());
         request.setOriginalUrl(newOriginalUrl);
 
         BaseEvent<ShortLinkAddRequest> baseEvent = BaseEvent.<ShortLinkAddRequest>builder()
@@ -197,7 +190,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     private boolean retryWithNewUrl(BaseEvent<ShortLinkAddRequest> baseEvent,
                                     ShortLinkAddRequest addRequest) throws InterruptedException {
         // 重复之后，重新生成一个新的原始url
-        String newOriginalUrl = CommonUtil.addUrlPrefixVersion(addRequest.getOriginalUrl());
+        String newOriginalUrl = shortLinkUtil.addUrlPrefixVersion(addRequest.getOriginalUrl());
         addRequest.setOriginalUrl(newOriginalUrl);
         baseEvent.setData(addRequest);
         log.warn("短链码保存失败，重新生成:{}", JsonUtil.obj2Json(addRequest));
