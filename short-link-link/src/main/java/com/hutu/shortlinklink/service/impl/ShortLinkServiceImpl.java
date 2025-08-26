@@ -50,7 +50,9 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     private final EventPublisher eventPublisher;
     private final RedisTemplate<String, String> redisTemplate;
     private final GroupCodeMappingService mappingService;
-    private static final int LOCK_EXPIRE_SECONDS = 100;
+    // 设置锁过期时间，可以长一点
+    // B，C端可以重入，为了防止可能有信息堆积，设置锁过期时间长一些
+    private static final int LOCK_EXPIRE_SECONDS = 1000;
 
     @Override
     public Boolean createShortLink(ShortLinkAddRequest request) {
@@ -92,15 +94,19 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         String shortLinkCode = shortLinkUtil.createShortLinkCode(addRequest.getOriginalUrl());
         Long accountNo = baseEvent.getAccountNo();
         String eventMessageType = baseEvent.getEventMessageType();
+
         //加锁
         //key1是短链码，ARGV[1]是accountNo,ARGV[2]是过期时间
         String script = "if redis.call('EXISTS',KEYS[1])==0 then redis.call('set',KEYS[1],ARGV[1]); redis.call('expire',KEYS[1],ARGV[2]); return 1;" +
                 " elseif redis.call('get',KEYS[1]) == ARGV[1] then return 2;" +
                 " else return 0; end;";
 
-        Long result = redisTemplate.execute(new
-                DefaultRedisScript<>(script, Long.class), Collections.singletonList(shortLinkCode), accountNo, LOCK_EXPIRE_SECONDS);
-        boolean isDuplicate = false;
+        Long result = redisTemplate.execute(
+                new DefaultRedisScript<>(script, Long.class),
+                Collections.singletonList(shortLinkCode),
+                String.valueOf(accountNo), String.valueOf(LOCK_EXPIRE_SECONDS)
+        );
+        boolean isDuplicate;
         if (result > 0) {
             if (EventMessageType.SHORT_LINK_ADD_LINK.name().equalsIgnoreCase(eventMessageType)) {
                 isDuplicate = handleCShortLink(accountNo, shortLinkCode, addRequest, sign);
@@ -114,6 +120,7 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
             log.error("短链码加锁失败:{}", JsonUtil.obj2Json(baseEvent));
             return retryWithNewUrl(baseEvent, addRequest);
         }
+        //
         if (isDuplicate) {
             return retryWithNewUrl(baseEvent, addRequest);
         }
