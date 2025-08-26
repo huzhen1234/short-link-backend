@@ -35,7 +35,7 @@ public class ShortLinkAddLinkListener implements RocketMQListener<String> {
         try {
             BaseEvent<ShortLinkAddRequest> result = JsonUtil.json2Obj(message, BaseEvent.class, ShortLinkAddRequest.class);
             AssertUtils.notNull(result, BizCodeEnum.PARAM_ERROR);
-            result.setEventMessageType(EventMessageType.SHORT_LINK_ADD_MAPPING.name());
+            result.setEventMessageType(EventMessageType.SHORT_LINK_ADD_LINK.name());
             shortLinkService.handlerAddShortLink(result);
         } catch (Exception e) {
             log.error("消息处理异常: {}", e.getMessage());
