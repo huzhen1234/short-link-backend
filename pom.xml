@@ -31,7 +31,7 @@
         <xxl-job.version>2.3.0</xxl-job.version>
         <shardingsphere.version>5.2.0</shardingsphere.version>
         <commons.lang3.version>3.9</commons.lang3.version>
-        <redission.version>3.10.1</redission.version>
+        <redisson.version>3.35.0</redisson.version>
         <minio.version>8.5.2</minio.version>
         <jwt.version>0.11.2</jwt.version>
         <mysql.version>8.0.33</mysql.version>
@@ -91,7 +91,7 @@
             <dependency>
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson</artifactId>
-                <version>${redission.version}</version>
+                <version>${redisson.version}</version>
             </dependency>
 
             <dependency>
