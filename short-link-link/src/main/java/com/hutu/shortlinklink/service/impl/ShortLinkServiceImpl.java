@@ -1,12 +1,15 @@
 package com.hutu.shortlinklink.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hutu.shortlinkcommon.common.CurrentAccountInfo;
 import com.hutu.shortlinkcommon.common.RocketMQConstant;
 import com.hutu.shortlinkcommon.enums.BizCodeEnum;
 import com.hutu.shortlinkcommon.enums.EventMessageType;
 import com.hutu.shortlinkcommon.enums.ShortLinkStateEnum;
+import com.hutu.shortlinkcommon.enums.StateEnum;
 import com.hutu.shortlinkcommon.event.BaseEvent;
+import com.hutu.shortlinkcommon.event.BaseEventDO;
 import com.hutu.shortlinkcommon.interceptor.LoginInterceptor;
 import com.hutu.shortlinkcommon.util.AssertUtils;
 import com.hutu.shortlinkcommon.util.CommonUtil;
@@ -16,6 +19,8 @@ import com.hutu.shortlinklink.domain.pojo.GroupCodeMapping;
 import com.hutu.shortlinklink.domain.pojo.LinkGroup;
 import com.hutu.shortlinklink.domain.pojo.ShortLink;
 import com.hutu.shortlinklink.domain.req.ShortLinkAddRequest;
+import com.hutu.shortlinklink.domain.req.ShortLinkDelRequest;
+import com.hutu.shortlinklink.domain.req.ShortLinkPageRequest;
 import com.hutu.shortlinklink.domain.vo.ShortLinkVO;
 import com.hutu.shortlinklink.mapper.ShortLinkMapper;
 import com.hutu.shortlinklink.mq.producer.EventPublisher;
@@ -82,11 +87,11 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
                 log.error("createShortLink 发送消息失败: {}", throwable.getMessage());
             }
         };
-        eventPublisher.publishAsync(RocketMQConstant.TOPIC_SHORT_LINK, baseEvent, callback);
+        eventPublisher.publishAsync(RocketMQConstant.TOPIC_SHORT_LINK_CREATE, baseEvent, callback);
         return Boolean.TRUE;
     }
 
-    public boolean handlerAddShortLink(BaseEvent<ShortLinkAddRequest> baseEvent) throws InterruptedException {
+    public Boolean handlerAddShortLink(BaseEvent<ShortLinkAddRequest> baseEvent) throws InterruptedException {
         ShortLinkAddRequest addRequest = baseEvent.getData();
         // 长链摘要
         String sign = CommonUtil.MD5(addRequest.getOriginalUrl());
@@ -136,6 +141,44 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
             return shortLinkVO;
         }
         return null;
+    }
+
+    @Override
+    public Page<GroupCodeMapping> pageByGroupId(ShortLinkPageRequest pageRequest) {
+        CurrentAccountInfo currentAccountInfo = LoginInterceptor.threadLocal.get();
+        AssertUtils.notNull(currentAccountInfo, BizCodeEnum.JWT_PARSE_ERROR);
+        Page<GroupCodeMapping> page = new Page<>(pageRequest.getPage(), pageRequest.getSize());
+        return mappingService.lambdaQuery()
+                .eq(GroupCodeMapping::getGroupId, pageRequest.getGroupId())
+                .eq(GroupCodeMapping::getAccountNo, currentAccountInfo.getAccountNo())
+                .eq(GroupCodeMapping::getDel, StateEnum.ACTIVE.getCode())
+                .page(page);
+    }
+
+    @Override
+    public Boolean del(ShortLinkDelRequest request) {
+        CurrentAccountInfo currentAccountInfo = LoginInterceptor.threadLocal.get();
+        AssertUtils.notNull(currentAccountInfo, BizCodeEnum.JWT_PARSE_ERROR);
+        BaseEvent<ShortLinkDelRequest> baseEvent = BaseEvent.<ShortLinkDelRequest>builder()
+                .messageId(IDUtil.generateSnowflakeId().toString())
+                .eventMessageType(EventMessageType.SHORT_LINK_DEL.name())
+                .accountNo(currentAccountInfo.getAccountNo())
+                .remark("delete short link")
+                .data(request)
+                .build();
+        SendCallback callback = new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("del 删除短链码");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("del 删除短链码失败: {}", throwable.getMessage());
+            }
+        };
+        eventPublisher.publishAsync(RocketMQConstant.TOPIC_SHORT_LINK_DELETE, baseEvent, callback);
+        return Boolean.TRUE;
     }
 
 

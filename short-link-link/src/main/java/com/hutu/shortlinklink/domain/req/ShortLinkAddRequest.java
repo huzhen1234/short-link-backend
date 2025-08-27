@@ -2,12 +2,16 @@ package com.hutu.shortlinklink.domain.req;
 
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class ShortLinkAddRequest {
+public class ShortLinkAddRequest implements Serializable {
 
 
+    @Serial
+    private static final long serialVersionUID = 7927063102838061518L;
     /**
      * 组
      */

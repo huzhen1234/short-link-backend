@@ -21,8 +21,8 @@ import org.springframework.stereotype.Component;
  * MessageExt可以接收全部的信息
  */
 @Component
-@RocketMQMessageListener(topic = RocketMQConstant.TOPIC_SHORT_LINK
-        , consumerGroup = RocketMQConstant.TAG_SHORT_LINK_ADD_MAPPING
+@RocketMQMessageListener(topic = RocketMQConstant.TOPIC_SHORT_LINK_CREATE
+        , consumerGroup = RocketMQConstant.CONSUMER_GROUP_ADD_MAPPING
 //        , selectorExpression = RocketMQConstant.TAG_SHORT_LINK_ADD_MAPPING
         // 设置最大重试次数
         , maxReconsumeTimes = 1)

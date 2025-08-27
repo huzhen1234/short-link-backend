@@ -62,7 +62,7 @@ public class EventPublisher {
     public void publishAsync(String topic, BaseEvent<?> message, SendCallback callback) {
         try {
             String mqMessage = JSON.toJSONString(message);
-            log.info("[异步消息] 发送MQ消息 topic:{} message:{}", topic, mqMessage);
+            log.info("[异步消息] 发送MQ消息 topic:{} message:{} 消息备注:{}", topic, mqMessage,message.getRemark());
 
             rocketmqTemplate.asyncSend(
                     topic,

@@ -34,7 +34,7 @@ public class BaseEvent<T> {
     private Long accountNo;
 
     /**
-     * 异常备注
+     * 备注
      */
     private String remark;
 
