@@ -9,7 +9,6 @@ import com.hutu.shortlinkcommon.enums.EventMessageType;
 import com.hutu.shortlinkcommon.enums.ShortLinkStateEnum;
 import com.hutu.shortlinkcommon.enums.StateEnum;
 import com.hutu.shortlinkcommon.event.BaseEvent;
-import com.hutu.shortlinkcommon.event.BaseEventDO;
 import com.hutu.shortlinkcommon.interceptor.LoginInterceptor;
 import com.hutu.shortlinkcommon.util.AssertUtils;
 import com.hutu.shortlinkcommon.util.CommonUtil;
@@ -21,6 +20,7 @@ import com.hutu.shortlinklink.domain.pojo.ShortLink;
 import com.hutu.shortlinklink.domain.req.ShortLinkAddRequest;
 import com.hutu.shortlinklink.domain.req.ShortLinkDelRequest;
 import com.hutu.shortlinklink.domain.req.ShortLinkPageRequest;
+import com.hutu.shortlinklink.domain.req.ShortLinkUpdateRequest;
 import com.hutu.shortlinklink.domain.vo.ShortLinkVO;
 import com.hutu.shortlinklink.mapper.ShortLinkMapper;
 import com.hutu.shortlinklink.mq.producer.EventPublisher;
@@ -179,6 +179,46 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
         };
         eventPublisher.publishAsync(RocketMQConstant.TOPIC_SHORT_LINK_DELETE, baseEvent, callback);
         return Boolean.TRUE;
+    }
+
+    @Override
+    public void handlerDelShortLink(BaseEvent<ShortLinkDelRequest> result) {
+        CurrentAccountInfo currentAccountInfo = LoginInterceptor.threadLocal.get();
+        AssertUtils.notNull(currentAccountInfo, BizCodeEnum.JWT_PARSE_ERROR);
+        Long accountNo = currentAccountInfo.getAccountNo();
+        String messageType = result.getEventMessageType();
+        ShortLinkDelRequest request = result.getData();
+        //C端解析
+        if (EventMessageType.SHORT_LINK_DEL_LINK.name().equalsIgnoreCase(messageType)) {
+            remove(lambdaQuery().eq(ShortLink::getCode, request.getCode()).eq(ShortLink::getAccountNo, accountNo));
+        } else if (EventMessageType.SHORT_LINK_DEL_MAPPING.name().equalsIgnoreCase(messageType)) {
+            //B端处理
+            mappingService.remove(mappingService.lambdaQuery().eq(GroupCodeMapping::getId, request.getMappingId())
+                    .eq(GroupCodeMapping::getGroupId, request.getGroupId()));
+        }
+    }
+
+    @Override
+    public void handlerUpdateShortLink(BaseEvent<ShortLinkUpdateRequest> result) {
+        CurrentAccountInfo currentAccountInfo = LoginInterceptor.threadLocal.get();
+        AssertUtils.notNull(currentAccountInfo, BizCodeEnum.JWT_PARSE_ERROR);
+        String messageType = result.getEventMessageType();
+        ShortLinkUpdateRequest request = result.getData();
+        //C端处理
+        if (EventMessageType.SHORT_LINK_UPDATE_LINK.name().equalsIgnoreCase(messageType)) {
+            lambdaUpdate().eq(ShortLink::getCode, request.getCode())
+                    .eq(ShortLink::getAccountNo, currentAccountInfo.getAccountNo())
+                    .eq(ShortLink::getDel, StateEnum.ACTIVE.getCode())
+                    .eq(ShortLink::getTitle, request.getTitle())
+                    .update();
+        } else if (EventMessageType.SHORT_LINK_UPDATE_MAPPING.name().equalsIgnoreCase(messageType)) {
+            mappingService.lambdaUpdate().eq(GroupCodeMapping::getId, request.getMappingId())
+                    .eq(GroupCodeMapping::getGroupId, request.getGroupId())
+                    .eq(GroupCodeMapping::getDel, StateEnum.ACTIVE.getCode())
+                    .eq(GroupCodeMapping::getTitle, request.getTitle())
+                    .update();
+        }
+
     }
 
 

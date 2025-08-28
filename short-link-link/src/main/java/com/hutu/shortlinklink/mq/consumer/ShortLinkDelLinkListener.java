@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RocketMQMessageListener(topic = RocketMQConstant.TOPIC_SHORT_LINK_DELETE
         , consumerGroup = RocketMQConstant.CONSUMER_GROUP_DEL_LINK
-        , maxReconsumeTimes = 1)
+        , maxReconsumeTimes = 3)
 @Slf4j
 @RequiredArgsConstructor
 public class ShortLinkDelLinkListener implements RocketMQListener<String> {
@@ -35,8 +35,8 @@ public class ShortLinkDelLinkListener implements RocketMQListener<String> {
         try {
             BaseEvent<ShortLinkDelRequest> result = JsonUtil.json2Obj(message, BaseEvent.class, ShortLinkDelRequest.class);
             AssertUtils.notNull(result, BizCodeEnum.PARAM_ERROR);
-            result.setEventMessageType(EventMessageType.SHORT_LINK_ADD_LINK.name());
-//            shortLinkService.handlerAddShortLink(result);
+            result.setEventMessageType(EventMessageType.SHORT_LINK_DEL_LINK.name());
+            shortLinkService.handlerDelShortLink(result);
         } catch (Exception e) {
             log.error("消息处理异常: {}", e.getMessage());
             throw new BizException(BizCodeEnum.MQ_CONSUME_EXCEPTION);

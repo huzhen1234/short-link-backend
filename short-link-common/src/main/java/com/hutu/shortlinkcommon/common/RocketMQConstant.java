@@ -16,24 +16,39 @@ public class RocketMQConstant {
     public static final String TOPIC_SHORT_LINK_DELETE = "topic-short-link-delete";
 
     /**
-     * 短链事件 MQ 消费组 add消费组
+     * 更新短链主题
+     */
+    public static final String TOPIC_SHORT_LINK_UPDATE = "topic-short-link-update";
+
+    /**
+     * 短链事件 MQ 消费组 add消费组 C
      */
     public static final String CONSUMER_GROUP_ADD_LINK = "consumer_group_add_link";
 
     /**
-     * 短链事件 MQ 消费组 add消费组
+     * 短链事件 MQ 消费组 add消费组 B
      */
     public static final String CONSUMER_GROUP_ADD_MAPPING = "consumer_group_add_mapping";
 
     /**
-     * 短链事件 MQ 消费组 删除消费组
+     * 短链事件 MQ 消费组 删除消费组 C
      */
     public static final String CONSUMER_GROUP_DEL_LINK = "consumer_group_del_link";
 
     /**
-     * 短链事件 MQ 消费组 删除消费组
+     * 短链事件 MQ 消费组 删除消费组 B
      */
     public static final String CONSUMER_GROUP_DEL_MAPPING = "consumer_group_del_mapping";
+
+    /**
+     * 短链事件 MQ 消费组 更新消费组 C
+     */
+    public static final String CONSUMER_GROUP_UPDATE_LINK = "consumer_group_update_link";
+
+    /**
+     * 短链事件 MQ 消费组 更新消费组 B
+     */
+    public static final String CONSUMER_GROUP_UPDATE_MAPPING = "consumer_group_update_mapping";
 
 
     /**

@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
         , consumerGroup = RocketMQConstant.CONSUMER_GROUP_ADD_MAPPING
 //        , selectorExpression = RocketMQConstant.TAG_SHORT_LINK_ADD_MAPPING
         // 设置最大重试次数
-        , maxReconsumeTimes = 1)
+        , maxReconsumeTimes = 3)
 @Slf4j
 @RequiredArgsConstructor
 public class ShortLinkAddMappingListener implements RocketMQListener<String> {
