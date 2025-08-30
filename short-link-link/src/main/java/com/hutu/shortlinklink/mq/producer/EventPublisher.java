@@ -149,4 +149,10 @@ public class EventPublisher {
                     topic, tag, JSON.toJSONString(message), e);
         }
     }
+
+/*    Message<String> messages = MessageBuilder.withPayload(mqMessage)
+            .setHeader(RocketMQHeaders.KEYS, "your_message_key")
+            // 延迟等级
+            .setHeader(RocketMQHeaders.DELAY,1)
+            .build();*/
 }
