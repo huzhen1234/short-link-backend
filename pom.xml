@@ -15,6 +15,7 @@
         <module>short-link-common</module>
         <module>short-link-account</module>
         <module>short-link-link</module>
+        <module>short-link-shop</module>
     </modules>
 
     <properties>

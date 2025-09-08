@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hutu.shortlinkshop.mapper.ProductMapper">
+
+    <resultMap id="BaseResultMap" type="com.hutu.shortlinkshop.domain.Product">
+            <id property="id" column="id" />
+            <result property="title" column="title" />
+            <result property="detail" column="detail" />
+            <result property="img" column="img" />
+            <result property="level" column="level" />
+            <result property="oldAmount" column="old_amount" />
+            <result property="amount" column="amount" />
+            <result property="pluginType" column="plugin_type" />
+            <result property="dayTimes" column="day_times" />
+            <result property="totalTimes" column="total_times" />
+            <result property="validDay" column="valid_day" />
+            <result property="gmtModified" column="gmt_modified" />
+            <result property="gmtCreate" column="gmt_create" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,detail,img,level,old_amount,
+        amount,plugin_type,day_times,total_times,valid_day,
+        gmt_modified,gmt_create
+    </sql>
+</mapper>
