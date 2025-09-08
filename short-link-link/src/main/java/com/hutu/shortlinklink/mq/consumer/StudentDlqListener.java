@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
     consumerGroup = RocketMQConstant.GROUP_DLQ_HANDLER // 死信处理组
 )
 @Slf4j
+// TODO 其他Topic的死信队列
 public class StudentDlqListener implements RocketMQListener<MessageExt> {
     @Override
     public void onMessage(MessageExt message) {

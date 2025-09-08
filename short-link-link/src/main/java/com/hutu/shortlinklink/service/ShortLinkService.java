@@ -37,6 +37,7 @@ public interface ShortLinkService extends IService<ShortLink> {
 
     /**
      * 删除短链 -- B、C端都需要删除
+     * 发送MQ信息 由MQ处理
      */
     Boolean del(ShortLinkDelRequest request);
 
@@ -45,10 +46,11 @@ public interface ShortLinkService extends IService<ShortLink> {
      */
     void handlerDelShortLink(BaseEvent<ShortLinkDelRequest> result);
 
+
+    Boolean update(ShortLinkUpdateRequest request);
     /**
      * 更新短链码 -- 不允许更新 code 字段
      * TODO 其他都可以更改，不再重新生成code 增加复杂度
      */
-
     void handlerUpdateShortLink(BaseEvent<ShortLinkUpdateRequest> result);
 }

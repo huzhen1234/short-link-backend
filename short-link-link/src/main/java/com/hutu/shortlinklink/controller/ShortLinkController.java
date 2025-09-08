@@ -8,6 +8,7 @@ import com.hutu.shortlinklink.domain.pojo.GroupCodeMapping;
 import com.hutu.shortlinklink.domain.req.ShortLinkAddRequest;
 import com.hutu.shortlinklink.domain.req.ShortLinkDelRequest;
 import com.hutu.shortlinklink.domain.req.ShortLinkPageRequest;
+import com.hutu.shortlinklink.domain.req.ShortLinkUpdateRequest;
 import com.hutu.shortlinklink.service.ShortLinkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +50,12 @@ public class ShortLinkController {
     @PostMapping("del")
     public BaseResponse<Boolean> del(@RequestBody ShortLinkDelRequest request){
         return ResultUtils.success(shortLinkService.del(request));
+    }
+
+
+    @PostMapping("update")
+    public BaseResponse<Boolean> update(@RequestBody ShortLinkUpdateRequest request){
+        return ResultUtils.success(shortLinkService.update(request));
     }
 }
 

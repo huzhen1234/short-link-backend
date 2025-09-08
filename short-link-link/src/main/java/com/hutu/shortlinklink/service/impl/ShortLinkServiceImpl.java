@@ -199,6 +199,32 @@ public class ShortLinkServiceImpl extends ServiceImpl<ShortLinkMapper, ShortLink
     }
 
     @Override
+    public Boolean update(ShortLinkUpdateRequest request) {
+        CurrentAccountInfo currentAccountInfo = LoginInterceptor.threadLocal.get();
+        AssertUtils.notNull(currentAccountInfo, BizCodeEnum.JWT_PARSE_ERROR);
+        BaseEvent<ShortLinkUpdateRequest> baseEvent = BaseEvent.<ShortLinkUpdateRequest>builder()
+                .messageId(IDUtil.generateSnowflakeId().toString())
+                .eventMessageType(EventMessageType.SHORT_LINK_ADD.name())
+                .accountNo(currentAccountInfo.getAccountNo())
+                .remark("update short link")
+                .data(request)
+                .build();
+        SendCallback callback = new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("update 更新短链码");
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("update 更新短链码失败: {}", throwable.getMessage());
+            }
+        };
+        eventPublisher.publishAsync(RocketMQConstant.TOPIC_SHORT_LINK_UPDATE, baseEvent, callback);
+        return Boolean.TRUE;
+    }
+
+    @Override
     public void handlerUpdateShortLink(BaseEvent<ShortLinkUpdateRequest> result) {
         CurrentAccountInfo currentAccountInfo = LoginInterceptor.threadLocal.get();
         AssertUtils.notNull(currentAccountInfo, BizCodeEnum.JWT_PARSE_ERROR);
